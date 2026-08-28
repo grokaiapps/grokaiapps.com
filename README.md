@@ -4,11 +4,16 @@ Experiment, demo, and getting-started site for using AI tools to make cool thing
 
 Live site: https://grokaiapps.com
 
+## Purpose
+
+Be a good steward of this space. Help people use agentic tools in a positive, responsible way. Record what is actually worth sharing, so others can help themselves and help others. A ripple in a pond, with a clear purpose.
+
 ## Working agreement
 
 - Sandbox and review here first.
 - Nothing goes live or gets deleted without Wayne's say-so.
 - Keep it lightweight, documented, and open source when it helps.
+- Never spend money without permission unless Wayne gives an explicit override.
 
 ## Status
 
