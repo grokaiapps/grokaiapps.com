@@ -4,6 +4,10 @@ Experiment, demo, and getting-started site for using AI tools to make cool thing
 
 Live site: https://grokaiapps.com
 
+## About
+
+Grok means to understand something so thoroughly it becomes part of how you move. GROKAIAPPS applies that to agentic tools: real work, honest limits, and keeping what is helpful, useful, and interesting.
+
 ## Purpose
 
 Be a good steward of this space. Help people use agentic tools in a positive, responsible way. Record what is actually worth sharing, so others can help themselves and help others. A ripple in a pond, with a clear purpose.
