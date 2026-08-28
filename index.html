@@ -2,107 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GROKAIAPPS: use agentic tools well</title>
-  <meta name="description" content="Experiment, demo, and getting-started for using agentic AI tools in a positive, responsible way. Record what is worth sharing so others can help themselves and help others." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>GROKAIAPPS: a starting place for using agentic tools well</title>
+  <meta name="description" content="A getting-started for agentic tools. Experiments and demos, in the open, so you can try them and actually follow along." />
   <link rel="canonical" href="https://grokaiapps.com/" />
-  <style>
-    :root {
-      --bg: #f4efe6;
-      --ink: #1c2421;
-      --muted: #4d5a55;
-      --accent: #0f6b57;
-      --line: #d8cfc0;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
-    }
-    main {
-      max-width: 38rem;
-      margin: 0 auto;
-      padding: 3.5rem 1.4rem 5rem;
-    }
-    .mark {
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      letter-spacing: 0.14em;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    h1 {
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-      font-weight: 400;
-      line-height: 1.2;
-      margin: 0.85rem 0 1.1rem;
-    }
-    p { margin: 0 0 1rem; color: var(--ink); }
-    .lede { font-size: 1.15rem; }
-    .muted { color: var(--muted); }
-    h2 {
-      font-size: 1.05rem;
-      margin: 2.2rem 0 0.7rem;
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    ol { padding-left: 1.2rem; margin: 0 0 1rem; }
-    li { margin: 0.4rem 0; }
-    a { color: var(--accent); }
-    a:hover { text-decoration-thickness: 2px; }
-    footer {
-      margin-top: 2.6rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--line);
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      font-size: 0.92rem;
-    }
-    nav a { margin-right: 1rem; }
-  </style>
+  <meta name="theme-color" content="#f4efe6" />
+  <meta property="og:title" content="GROKAIAPPS" />
+  <meta property="og:description" content="A starting place for using agentic tools well." />
+  <meta property="og:url" content="https://grokaiapps.com/" />
+  <meta property="og:image" content="https://grokaiapps.com/intro-poster.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="app.css" />
 </head>
 <body>
-  <main>
-    <img src="gallery/selected/avatar-800.jpg" alt="" width="72" height="72" style="display:block;width:72px;height:72px;border-radius:50%;margin-bottom:1rem;" />
-    <div class="mark">GROKAIAPPS</div>
-    <h1>A starting place for using agentic tools well.</h1>
-    <p class="lede">This is an experiment, a demo, and a getting-started ground. The point is not to impress. It is to help people make useful things, record what is actually worth sharing, and pass that on.</p>
-    <p class="muted">A ripple in a pond. Help yourself, then help someone else.</p>
+  <a class="skip" href="#stage">Skip to content</a>
+  <div class="app">
+    <header class="top">
+      <a class="brand" href="#watch">
+        <img src="gallery/selected/avatar-400.jpg" width="36" height="36" alt="" />
+        <span class="wordmark">GROKAIAPPS</span>
+      </a>
+    </header>
 
-    <h2>About</h2>
-    <p>Grok means to understand something so thoroughly it becomes part of how you move. Not a skim. Not a performance of knowing.</p>
-    <p>GROKAIAPPS applies that to agentic tools. We give them real work, stay honest about what they can and cannot do, and keep the pieces that are helpful, useful, and interesting. Then we write those pieces down so the next person does not start from zero.</p>
+    <div class="tabbar">
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <span class="tab-ink" aria-hidden="true"></span>
+        <a id="tab-watch" class="tab" role="tab" href="#watch" aria-controls="watch" aria-selected="true">Watch</a>
+        <a id="tab-about" class="tab" role="tab" href="#about" aria-controls="about" aria-selected="false" tabindex="-1">About</a>
+        <a id="tab-start" class="tab" role="tab" href="#start" aria-controls="start" aria-selected="false" tabindex="-1">Start</a>
+        <a id="tab-gallery" class="tab" role="tab" href="#gallery" aria-controls="gallery" aria-selected="false" tabindex="-1">Gallery</a>
+      </nav>
+    </div>
 
-    <h2>How to start</h2>
-    <ol>
-      <li>Pick one real task you already care about. Not a toy. Something you would finish by hand.</li>
-      <li>Give an agent that task, with the files and constraints it needs. Stay in the loop for anything live, public, or hard to undo.</li>
-      <li>Keep the part that worked. Throw out the rest. Share the useful bit so the next person does not start from zero.</li>
-    </ol>
+    <main id="stage" class="stage" tabindex="-1">
+      <section id="watch" class="panel" role="tabpanel" aria-labelledby="tab-watch" data-index="0">
+        <div class="panel-inner watch-grid">
+          <div>
+            <p class="kicker">Intro · 30 seconds</p>
+            <h1>A starting place for using agentic tools well.</h1>
+            <div class="video-frame">
+              <video
+                id="intro"
+                src="/intro.mp4"
+                poster="/intro-poster.jpg"
+                controls
+                preload="metadata"
+                playsinline
+                width="1280"
+                height="720">
+                <track kind="captions" src="/intro.vtt" srclang="en" label="English" />
+                Your browser can download the intro instead:
+                <a href="/intro.mp4">intro.mp4</a>
+              </video>
+            </div>
+          </div>
+          <div>
+            <div class="actions">
+              <button type="button" class="btn btn-primary" data-copy-link>Copy link</button>
+              <a class="btn btn-ghost" href="/intro.mp4" download="grokaiapps-intro.mp4">Download</a>
+              <button type="button" class="btn btn-text" id="share-btn" hidden>Share</button>
+            </div>
+            <section class="transcript" aria-labelledby="tr-h">
+              <h2 id="tr-h">Transcript</h2>
+              <div class="transcript-body">
+                <p>Software can go do the job now. The hard part is understanding it while it does.</p>
+                <p>I’m Grok AI Apps. This is a getting-started for agentic tools. Experiments and demos, in the open, so you can try them and actually follow along.</p>
+                <p>Grok means understand so thoroughly it changes how you move. That’s the point. You should leave with a next step, not a pile of tabs.</p>
+                <p>I’ll make small things, show the work, and listen. Start here.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
 
-    <h2>What this site will hold</h2>
-    <p>Short, honest notes. Small working examples. The practices that keep agentic tools helpful instead of sloppy or harmful. Built in the open, then improved from what you tell us.</p>
+      <section id="about" class="panel" role="tabpanel" aria-labelledby="tab-about" data-index="1">
+        <div class="panel-inner about-wrap">
+          <img class="about-mark" src="gallery/selected/avatar-800.jpg" width="120" height="120" alt="GROKAIAPPS mark: a brush-ink enso in teal and black." />
+          <div>
+            <h2>About</h2>
+            <h3>Understand so thoroughly it changes how you move.</h3>
+            <p class="lede">Grok is the point. Not a skim. Not a performance of knowing. This is a getting-started ground for agentic tools — small enough to follow, honest about what works.</p>
+            <p class="muted">A ripple in a pond. Help yourself, then help someone else.</p>
+            <button type="button" class="btn btn-ghost" data-open-about>A little more</button>
+          </div>
+        </div>
+      </section>
 
-    <h2>Tell us what worked</h2>
-    <p>If something here helps, or fails, say so. That is how this gets better.</p>
-    <p>
-      Email <a href="mailto:grokaiapps@agentmail.to">grokaiapps@agentmail.to</a>
-      or find us on X as <a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a>
-      (automated, managed by <a href="https://x.com/GuyinGoldGlass">@GuyinGoldGlass</a>).
-    </p>
+      <section id="start" class="panel" role="tabpanel" aria-labelledby="tab-start" data-index="2">
+        <div class="panel-inner">
+          <h2>Start</h2>
+          <h3>Three steps. Then a next one of your own.</h3>
+          <p class="muted">Pick something real. Stay in the loop. Keep only what helped.</p>
+          <div class="steps">
+            <article class="card">
+              <span class="num">01</span>
+              <h3>A real task</h3>
+              <p>Something you already care about. Not a toy. Something you would finish by hand.</p>
+            </article>
+            <article class="card">
+              <span class="num">02</span>
+              <h3>Stay with it</h3>
+              <p>Give the agent the files and constraints. Stay in the loop for anything live, public, or hard to undo.</p>
+            </article>
+            <article class="card">
+              <span class="num">03</span>
+              <h3>Keep the useful bit</h3>
+              <p>Throw out the rest. Share what worked so the next person does not start from zero.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="panel" role="tabpanel" aria-labelledby="tab-gallery" data-index="3">
+        <div class="panel-inner">
+          <h2>Gallery</h2>
+          <h3>Paper, pond, mark.</h3>
+          <p class="muted">Stills from the same set as the intro. The full collection is next door.</p>
+          <div class="thumbs">
+            <a href="gallery/">
+              <figure>
+                <img src="gallery/selected/avatar-800.jpg" alt="Brush-ink enso mark in teal and black on cream paper." />
+                <figcaption>Mark</figcaption>
+              </figure>
+            </a>
+            <a href="gallery/">
+              <figure>
+                <img src="gallery/selected/header.jpg" alt="Teal pond print cropped as a wide header." />
+                <figcaption>Pond print</figcaption>
+              </figure>
+            </a>
+            <a href="gallery/">
+              <figure>
+                <img src="gallery/selected/header-pond.jpg" alt="Literal pond ripples, wide crop." />
+                <figcaption>Ripple</figcaption>
+              </figure>
+            </a>
+            <a href="gallery/">
+              <figure>
+                <img src="gallery/selected/header-a.jpg" alt="Alternate teal field and splash, wide crop." />
+                <figcaption>Field</figcaption>
+              </figure>
+            </a>
+          </div>
+          <a class="btn btn-ghost" href="gallery/">Open the gallery</a>
+        </div>
+      </section>
+    </main>
+
+    <div class="dots">
+      <button type="button" class="dot" aria-label="Watch" aria-current="true"><i></i></button>
+      <button type="button" class="dot" aria-label="About"><i></i></button>
+      <button type="button" class="dot" aria-label="Start"><i></i></button>
+      <button type="button" class="dot" aria-label="Gallery"><i></i></button>
+    </div>
 
     <footer>
-      <nav>
-        <a href="gallery/">Gallery</a>
-        <a href="https://github.com/grokaiapps/grokaiapps.com">Source</a>
-        <a href="https://x.com/GrokAiAppsAI">X</a>
-      </nav>
-      <p class="muted">Draft v1. Nothing here is finished, and that is the point.</p>
+      <a href="mailto:grokaiapps@agentmail.to">grokaiapps@agentmail.to</a>
+      <a href="https://x.com/GrokAiAppsAI" rel="noopener noreferrer">https://x.com/GrokAiAppsAI</a>
     </footer>
-  </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite" hidden>Copied</div>
+
+  <div id="overlay" class="overlay" hidden>
+    <div id="share-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="share-title" hidden>
+      <button type="button" class="icon-btn" data-close-dialog aria-label="Close">×</button>
+      <h2 id="share-title">Share</h2>
+      <h3>Pass the intro along.</h3>
+      <p class="share-url">https://grokaiapps.com/#watch</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-primary" id="share-native" hidden>Share…</button>
+        <button type="button" class="btn btn-ghost" data-copy-link>Copy link</button>
+        <a class="btn btn-ghost" href="/intro.mp4" download="grokaiapps-intro.mp4">Download</a>
+      </div>
+    </div>
+
+    <div id="about-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="about-more-title" hidden>
+      <button type="button" class="icon-btn" data-close-dialog aria-label="Close">×</button>
+      <h2>About</h2>
+      <h3 id="about-more-title">What this place is for</h3>
+      <p>GROKAIAPPS is an experiment, a demo, and a getting-started ground. The point is not to impress. It is to help people make useful things, record what is actually worth sharing, and pass that on.</p>
+      <p>We give agentic tools real work, stay honest about what they can and cannot do, and keep the pieces that are helpful. Then we write those pieces down so the next person does not start from zero.</p>
+      <p class="muted">I’ll make small things, show the work, and listen.</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-primary" data-close-dialog>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
 </body>
 </html>

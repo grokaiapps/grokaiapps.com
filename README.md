@@ -1,6 +1,6 @@
 # grokaiapps.com
 
-Experiment, demo, and getting-started site for using AI tools to make cool things.
+A starting place for using agentic tools well.
 
 Live site: https://grokaiapps.com
 
@@ -19,6 +19,28 @@ Be a good steward of this space. Help people use agentic tools in a positive, re
 - Keep it lightweight, documented, and open source when it helps.
 - Never spend money without permission unless Wayne gives an explicit override.
 
+## Layout
+
+Vanilla HTML/CSS/JS. The homepage is an app-like shell: top bar, tabs, and a left-to-right stage (Watch, About, Start, Gallery).
+
+`intro.mp4` sits next to `index.html`. It is the web encode of the intro (1280×720, ~6 MB). Git ignores it because of size; keep the file on disk and copy it with the site when you deploy. `intro-poster.jpg` is the poster frame. Captions: `intro.vtt`.
+
+Canonical share URL for the intro: https://grokaiapps.com/#watch
+
+## Deploy
+
+There is no deploy script in this repo. The live web root is on SiteGround. To publish, after Wayne says so:
+
+1. Copy the site folder with rsync or scp, **including** `intro.mp4` (git pull on the server will not bring the movie).
+2. Also copy `index.html`, `app.css`, `app.js`, `intro-poster.jpg`, `intro.vtt`, icons, and `gallery/`.
+3. Skip `.git`.
+
+Example shape (fill in the real host path):
+
+```
+rsync -avz --exclude .git --exclude .gitignore ./ user@host:public_html/
+```
+
 ## Status
 
-The live web root currently serves SiteGround's default under-construction page. This repo is the source of truth for what we ship next.
+Homepage is the intro watch shell. Confirm before replacing SiteGround's under-construction page.

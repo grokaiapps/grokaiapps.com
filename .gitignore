@@ -1,0 +1,3 @@
+# Web encode lives on disk for rsync/scp deploy. Do not commit until asked.
+intro.mp4
+.DS_Store
