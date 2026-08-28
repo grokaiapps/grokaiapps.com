@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GROKAIAPPS image gallery</title>
+  <style>
+    :root { --bg:#f4efe6; --ink:#1c2421; --muted:#4d5a55; --accent:#0f6b57; --line:#d8cfc0; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Georgia, serif; background:var(--bg); color:var(--ink); }
+    main { max-width: 56rem; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
+    a { color: var(--accent); }
+    h1 { font-weight:400; font-size:1.8rem; }
+    h2 { font-family: ui-sans-serif, system-ui, sans-serif; font-size:.9rem; letter-spacing:.06em; text-transform:uppercase; margin:2.2rem 0 .8rem; }
+    .muted { color:var(--muted); }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .8rem; }
+    .grid.wide { grid-template-columns: 1fr; }
+    figure { margin:0; background:#fff; border:1px solid var(--line); padding:.5rem; }
+    figure img { width:100%; height:auto; display:block; }
+    figcaption { font-family: ui-sans-serif, system-ui, sans-serif; font-size:.75rem; margin-top:.4rem; color:var(--muted); }
+    .pick { outline: 2px solid var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="../index.html">GROKAIAPPS</a></p>
+    <h1>Image gallery</h1>
+    <p class="muted">Every still Wayne sent, kept. Picks for live use are marked. Midjourney, August 2026, pond / ripple / mark set.</p>
+
+    <h2>In use</h2>
+    <div class="grid">
+      <figure class="pick">
+        <img src="selected/avatar-800.jpg" alt="Avatar: black and teal enso" />
+        <figcaption>Avatar / mark — IMG_3541</figcaption>
+      </figure>
+      <figure class="pick">
+        <img src="selected/header.jpg" alt="Header crop of teal pond print" />
+        <figcaption>X header — crop of IMG_3538</figcaption>
+      </figure>
+    </div>
+    <p class="muted">Alternate header crop of the literal pond (IMG_3549) is in selected/header-pond.jpg if we want it later.</p>
+
+    <h2>All originals</h2>
+    <div class="grid">
+      <figure><img src="originals/pond/IMG_3537.JPG" alt="" /><figcaption>IMG_3537 — print, teal field + ripple + splatter</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3538.JPG" alt="" /><figcaption>IMG_3538 — same family, header source</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3539.JPG" alt="" /><figcaption>IMG_3539 — blotch with inner ripples</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3540.JPG" alt="" /><figcaption>IMG_3540 — teal enso</figcaption></figure>
+      <figure class="pick"><img src="originals/pond/IMG_3541.JPG" alt="" /><figcaption>IMG_3541 — black + teal enso (avatar)</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3542.JPG" alt="" /><figcaption>IMG_3542 — circular splash + ripples</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3543.JPG" alt="" /><figcaption>IMG_3543 — stamp halo + horizon</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3544.JPG" alt="" /><figcaption>IMG_3544 — circle with crosshairs</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3545.JPG" alt="" /><figcaption>IMG_3545 — dark teal enso</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3546.JPG" alt="" /><figcaption>IMG_3546 — ring with a stem</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3547.JPG" alt="" /><figcaption>IMG_3547 — wash + drafting lines</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3548.JPG" alt="" /><figcaption>IMG_3548 — concentric brush ring</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3549.JPG" alt="" /><figcaption>IMG_3549 — pond ripples</figcaption></figure>
+      <figure><img src="originals/pond/IMG_3550.JPG" alt="" /><figcaption>IMG_3550 — drop and rings</figcaption></figure>
+    </div>
+  </main>
+</body>
+</html>
