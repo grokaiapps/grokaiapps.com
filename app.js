@@ -242,5 +242,35 @@
     });
   }
 
+
+  function applyTheme(theme) {
+    var dark = theme === "dark";
+    if (dark) document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
+    var btn = document.getElementById("theme-toggle");
+    if (btn) {
+      btn.setAttribute("aria-pressed", dark ? "true" : "false");
+      btn.setAttribute("aria-label", dark ? "Switch to day colors" : "Switch to night colors");
+      var lab = btn.querySelector(".theme-toggle-label");
+      if (lab) lab.textContent = "Night";
+    }
+    var meta = document.getElementById("theme-color");
+    if (meta) meta.setAttribute("content", dark ? "#141a17" : "#f4efe6");
+    try { localStorage.setItem("grokaiapps-theme", dark ? "dark" : "light"); } catch (e) {}
+  }
+
+  var themeToggle = document.getElementById("theme-toggle");
+  var startTheme = "light";
+  try {
+    var saved = localStorage.getItem("grokaiapps-theme");
+    if (saved === "dark" || saved === "light") startTheme = saved;
+  } catch (e) {}
+  applyTheme(startTheme);
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  }
+
   go(indexFromHash(), { fromScroll: false });
 })();

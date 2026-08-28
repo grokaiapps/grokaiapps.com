@@ -6,7 +6,16 @@
   <title>GROKAIAPPS: a starting place for using agentic tools well</title>
   <meta name="description" content="A getting-started for agentic tools. Experiments and demos, in the open, so you can try them and actually follow along." />
   <link rel="canonical" href="https://grokaiapps.com/" />
-  <meta name="theme-color" content="#f4efe6" />
+  <meta name="theme-color" content="#f4efe6" id="theme-color" />
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("grokaiapps-theme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta property="og:title" content="GROKAIAPPS" />
   <meta property="og:description" content="A starting place for using agentic tools well." />
   <meta property="og:url" content="https://grokaiapps.com/" />
@@ -15,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="app.css" />
+  <link rel="stylesheet" href="app.css?v=3" />
 </head>
 <body>
   <a class="skip" href="#stage">Skip to content</a>
@@ -25,6 +34,10 @@
         <img src="gallery/selected/avatar-400.jpg" width="36" height="36" alt="" />
         <span class="wordmark">GROKAIAPPS</span>
       </a>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">
+        <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
+        <span class="theme-toggle-label">Night</span>
+      </button>
     </header>
 
     <div class="tabbar">
@@ -193,6 +206,6 @@
     </div>
   </div>
 
-  <script src="app.js" defer></script>
+  <script src="app.js?v=3" defer></script>
 </body>
 </html>
