@@ -1,0 +1,181 @@
+/* Exhibit polish: Control is a scrollable sheet beside the instrument.
+   The keybed stays fully visible. All knobs, voices, and tune pads stay in view. */
+
+.stylo-stage:has(.play-frame.is-open) {
+  justify-items: start;
+  place-items: center start;
+}
+
+.play-frame.is-open {
+  --frame-aspect: 1.78;
+  --dock-w: min(22.5rem, calc(100vw - 28px));
+  place-self: center start !important;
+  justify-self: start !important;
+  margin-left: max(12px, env(safe-area-inset-left));
+  margin-right: calc(var(--dock-w) + 20px);
+  width: min(
+    calc(100vw - var(--dock-w) - 36px),
+    calc((100dvh - 64px) * var(--frame-aspect))
+  );
+  gap: 0;
+}
+
+.settings-dock {
+  position: fixed;
+  z-index: 40;
+  top: max(64px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: min(22.5rem, calc(100vw - 28px));
+  max-height: calc(100dvh - 78px);
+  flex: none;
+  gap: 10px;
+  padding: 12px 14px 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  border-radius: 16px;
+  background: #161310f2;
+  box-shadow: 0 0 0 1px #f4efe624, 0 18px 40px #00000073;
+}
+
+.settings-head {
+  position: sticky;
+  top: -12px;
+  z-index: 2;
+  margin: -12px -14px 0;
+  padding: 12px 14px 10px;
+  background: linear-gradient(#1a1714, #161310f2);
+}
+
+.settings-head h2 {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.dock-volume {
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-height: 0;
+  height: auto;
+}
+
+.dock-volume-meta {
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 4.5rem;
+}
+
+.dock-fader {
+  flex: 1;
+  width: auto;
+  min-height: 56px;
+  max-height: 72px;
+  margin: 0;
+}
+
+.knob-deck {
+  gap: 8px 6px;
+  padding: 4px 0 2px;
+}
+
+.knob {
+  width: 46px;
+  height: 46px;
+}
+
+.knob-label,
+.field-name {
+  font-size: 10px;
+}
+
+.knob-readout {
+  font-size: 11px;
+}
+
+.slot-switch button {
+  min-height: 34px;
+  padding: 6px 4px;
+  font-size: 11px;
+}
+
+.tune-row {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f4efe614;
+}
+
+.tune-row::before {
+  content: "Play a tune";
+  grid-column: 1 / -1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.tune-pad {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  min-height: 52px;
+  padding: 8px 6px;
+  font-size: 11px;
+  line-height: 1.25;
+  border-radius: 10px;
+}
+
+@media (orientation: portrait) {
+  .play-frame.is-open {
+    transform: none;
+    flex-direction: column;
+    justify-self: center;
+    align-items: stretch;
+    margin-left: 0;
+    margin-right: 0;
+    width: min(96vw, 100%);
+    height: calc(100dvh - 72px);
+    max-height: calc(100dvh - 72px);
+    aspect-ratio: auto;
+    gap: 10px;
+  }
+
+  .play-frame.is-open .device-fit {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: 34dvh;
+  }
+
+  .play-frame.is-open .device-fit .device {
+    width: 100%;
+    height: auto;
+    max-height: 34dvh;
+  }
+
+  .play-frame.is-open .settings-dock {
+    position: relative;
+    inset: auto;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-height: none;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play-frame.is-open,
+  .settings-dock {
+    transition: none;
+  }
+}
