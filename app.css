@@ -115,28 +115,27 @@ body::before {
 
 .theme-toggle {
   appearance: none;
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  border: 0;
+  background: transparent;
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  min-height: 40px;
-  padding: 0.3rem 0.7rem 0.3rem 0.35rem;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
   border-radius: 999px;
   cursor: pointer;
 }
-.theme-toggle:hover, .theme-toggle:active { border-color: var(--teal); color: var(--teal); }
+.theme-toggle:hover .theme-toggle-track,
+.theme-toggle:active .theme-toggle-track {
+  background: color-mix(in srgb, var(--cream-2) 70%, var(--teal));
+}
 .theme-toggle-track {
-  width: 2.05rem;
-  height: 1.15rem;
+  width: 2.15rem;
+  height: 1.2rem;
   border-radius: 999px;
   background: var(--cream-2);
-  border: 1px solid var(--line);
+  border: 0;
   position: relative;
   display: block;
   flex: 0 0 auto;

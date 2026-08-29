@@ -251,8 +251,6 @@
     if (btn) {
       btn.setAttribute("aria-pressed", dark ? "true" : "false");
       btn.setAttribute("aria-label", dark ? "Switch to day colors" : "Switch to night colors");
-      var lab = btn.querySelector(".theme-toggle-label");
-      if (lab) lab.textContent = "Night";
     }
     var meta = document.getElementById("theme-color");
     if (meta) meta.setAttribute("content", dark ? "#141a17" : "#f4efe6");
