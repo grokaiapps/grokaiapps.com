@@ -2,7 +2,7 @@
   "use strict";
 
   var SHARE_URL = "https://grokaiapps.com/#watch";
-  var NAMES = ["watch", "about", "start", "gallery"];
+  var NAMES = ["watch", "about", "start", "exhibits", "gallery"];
 
   var stage = document.getElementById("stage");
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs [role="tab"]'));

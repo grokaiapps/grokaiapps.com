@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Exhibits — GROKAIAPPS</title>
+  <meta name="description" content="Things to try. More will land here." />
+  <link rel="canonical" href="https://grokaiapps.com/exhibits/" />
+  <meta name="theme-color" content="#f4efe6" />
+  <meta property="og:title" content="Exhibits — GROKAIAPPS" />
+  <meta property="og:description" content="Things to try. More will land here." />
+  <meta property="og:url" content="https://grokaiapps.com/exhibits/" />
+  <meta property="og:image" content="https://grokaiapps.com/exhibits/stylophone/og.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="../favicon.png" type="image/png" />
+  <style>
+    :root {
+      --cream: #f4efe6;
+      --paper: #faf7f1;
+      --ink: #1c2421;
+      --muted: #4d5a55;
+      --teal: #0f6b57;
+      --line: #d8cfc0;
+      --serif: "Palatino Linotype", Palatino, "Book Antiqua", "URW Palladio L", Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100dvh;
+      font-family: var(--serif);
+      background:
+        radial-gradient(ellipse at 12% -10%, rgba(15, 107, 87, 0.07), transparent 46%),
+        var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    main { max-width: 42rem; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
+    a { color: var(--teal); }
+    .kicker {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 0.45rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+    h1 { font-weight: 400; font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 0.4rem; }
+    .muted { color: var(--muted); margin: 0 0 1.4rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+      gap: 0.85rem;
+    }
+    .card {
+      display: block;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 0.35rem;
+      color: inherit;
+      text-decoration: none;
+    }
+    .card:hover { border-color: var(--teal); }
+    .card img { width: 100%; height: 9rem; object-fit: cover; display: block; }
+    .card h2 { font-size: 1.1rem; font-weight: 400; margin: 0.6rem 0.65rem 0.2rem; }
+    .card p { font-size: 0.95rem; color: var(--muted); margin: 0 0.65rem 0.8rem; }
+    footer {
+      margin-top: 2.2rem;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a class="kicker" href="https://grokaiapps.com/">GROKAIAPPS</a></p>
+    <h1>Exhibits</h1>
+    <p class="muted">Things to try. More will land here.</p>
+    <div class="grid">
+      <a class="card" href="stylophone/">
+        <img src="stylophone/og.jpg" alt="Stylophone pocket stylus synthesizer" width="640" height="360" />
+        <h2>Stylophone</h2>
+        <p>Pocket stylus synthesizer — flip the power, drag across the keys.</p>
+      </a>
+    </div>
+    <footer>
+      <a href="https://grokaiapps.com/">Back to grokaiapps.com</a>
+    </footer>
+  </main>
+</body>
+</html>

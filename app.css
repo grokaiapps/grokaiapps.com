@@ -168,8 +168,8 @@ html[data-theme="dark"] .theme-toggle-track {
 .tabs {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 40rem;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 48rem;
   margin: 0 auto;
 }
 
@@ -177,7 +177,7 @@ html[data-theme="dark"] .theme-toggle-track {
   position: absolute;
   left: 0;
   bottom: -1px;
-  width: 25%;
+  width: 20%;
   height: 2px;
   background: var(--teal);
   transform: translateX(calc(var(--i, 0) * 100%));
@@ -386,7 +386,7 @@ p { margin: 0 0 0.8rem; }
 
 .thumbs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.55rem;
   margin: 0.7rem 0 1rem;
 }
@@ -409,6 +409,39 @@ p { margin: 0 0 0.8rem; }
   color: var(--muted);
   margin-top: 0.3rem;
 }
+
+.exhibit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: 0.7rem;
+  margin: 0.7rem 0 1rem;
+}
+.exhibit-card {
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.3rem;
+  color: inherit;
+  text-decoration: none;
+  min-height: 100%;
+}
+.exhibit-card:hover, .exhibit-card:active { border-color: var(--teal); color: var(--ink); }
+.exhibit-card img {
+  width: 100%;
+  height: 8.4rem;
+  object-fit: cover;
+  display: block;
+}
+.exhibit-card h3 {
+  font-size: 1.05rem;
+  margin: 0.55rem 0.65rem 0.15rem;
+}
+.exhibit-card p {
+  margin: 0 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
 
 .dots {
   display: flex;
@@ -558,9 +591,12 @@ a { color: var(--teal); }
   .thumbs img { height: 6.2rem; }
 }
 
+@media (max-width: 560px) {
+  .tabs [role="tab"] { font-size: 0.72rem; letter-spacing: 0.02em; padding: 0.7rem 0.05rem 0.75rem; }
+}
 @media (max-width: 420px) {
   .wordmark { letter-spacing: 0.12em; font-size: 0.76rem; }
-  .tabs [role="tab"] { font-size: 0.74rem; letter-spacing: 0.03em; padding-inline: 0; }
+  .tabs [role="tab"] { font-size: 0.64rem; letter-spacing: 0; padding-inline: 0; }
   .panel { padding: 0.85rem 0.9rem 0.5rem; }
   .steps { gap: 0.35rem; }
   .num { font-size: 1rem; }

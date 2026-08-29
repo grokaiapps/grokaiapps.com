@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="app.css?v=3" />
+  <link rel="stylesheet" href="app.css?v=4" />
 </head>
 <body>
   <a class="skip" href="#stage">Skip to content</a>
@@ -46,6 +46,7 @@
         <a id="tab-watch" class="tab" role="tab" href="#watch" aria-controls="watch" aria-selected="true">Watch</a>
         <a id="tab-about" class="tab" role="tab" href="#about" aria-controls="about" aria-selected="false" tabindex="-1">About</a>
         <a id="tab-start" class="tab" role="tab" href="#start" aria-controls="start" aria-selected="false" tabindex="-1">Start</a>
+        <a id="tab-exhibits" class="tab" role="tab" href="#exhibits" aria-controls="exhibits" aria-selected="false" tabindex="-1">Exhibits</a>
         <a id="tab-gallery" class="tab" role="tab" href="#gallery" aria-controls="gallery" aria-selected="false" tabindex="-1">Gallery</a>
       </nav>
     </div>
@@ -54,7 +55,7 @@
       <section id="watch" class="panel" role="tabpanel" aria-labelledby="tab-watch" data-index="0">
         <div class="panel-inner watch-grid">
           <div>
-            <p class="kicker">Intro · 30 seconds</p>
+            <p class="kicker">Intro · 36 seconds</p>
             <h1>A starting place for using agentic tools well.</h1>
             <div class="video-frame">
               <video
@@ -82,9 +83,9 @@
               <h2 id="tr-h">Transcript</h2>
               <div class="transcript-body">
                 <p>Software can go do the job now. The hard part is understanding it while it does.</p>
-                <p>I’m Grok AI Apps. This is a getting-started for agentic tools. Experiments and demos, in the open, so you can try them and actually follow along.</p>
-                <p>Grok means understand so thoroughly it changes how you move. That’s the point. You should leave with a next step, not a pile of tabs.</p>
-                <p>I’ll make small things, show the work, and listen. Start here.</p>
+                <p>I’m Grok AI Apps. This is a getting-started. Watch, then try what’s on the site.</p>
+                <p>Grok means understand so thoroughly it changes how you move. Leave with a next step, not a pile of tabs.</p>
+                <p>Next step: go to grokaiapps.com and open Start. I’ll put short demos and walkthroughs there, one at a time, so you can actually try them.</p>
               </div>
             </section>
           </div>
@@ -129,7 +130,23 @@
         </div>
       </section>
 
-      <section id="gallery" class="panel" role="tabpanel" aria-labelledby="tab-gallery" data-index="3">
+      <section id="exhibits" class="panel" role="tabpanel" aria-labelledby="tab-exhibits" data-index="3">
+        <div class="panel-inner">
+          <h2>Exhibits</h2>
+          <h3>Things to try. More will land here.</h3>
+          <p class="muted">Small things you can open and use. This list will grow.</p>
+          <div class="exhibit-grid">
+            <a class="exhibit-card" href="exhibits/stylophone/">
+              <img src="exhibits/stylophone/og.jpg" alt="Stylophone pocket stylus synthesizer" width="640" height="360" />
+              <h3>Stylophone</h3>
+              <p>Pocket stylus synthesizer — flip the power, drag across the keys.</p>
+            </a>
+          </div>
+          <a class="btn btn-ghost" href="exhibits/">Open the exhibits menu</a>
+        </div>
+      </section>
+
+      <section id="gallery" class="panel" role="tabpanel" aria-labelledby="tab-gallery" data-index="4">
         <div class="panel-inner">
           <h2>Gallery</h2>
           <h3>Paper, pond, mark.</h3>
@@ -169,6 +186,7 @@
       <button type="button" class="dot" aria-label="Watch" aria-current="true"><i></i></button>
       <button type="button" class="dot" aria-label="About"><i></i></button>
       <button type="button" class="dot" aria-label="Start"><i></i></button>
+      <button type="button" class="dot" aria-label="Exhibits"><i></i></button>
       <button type="button" class="dot" aria-label="Gallery"><i></i></button>
     </div>
 
@@ -206,6 +224,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=3" defer></script>
+  <script src="app.js?v=4" defer></script>
 </body>
 </html>
