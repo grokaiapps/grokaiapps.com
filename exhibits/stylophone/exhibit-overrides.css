@@ -179,3 +179,31 @@
     transition: none;
   }
 }
+
+
+/* Hide zip downloads on the load screen and the main page. */
+.zip-dl,
+.splash-dl {
+  display: none !important;
+}
+
+.reset-defaults {
+  flex: none;
+  width: 100%;
+  margin-top: 2px;
+  min-height: 32px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #08060573;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.reset-defaults:hover {
+  background: #26211cb3;
+}
