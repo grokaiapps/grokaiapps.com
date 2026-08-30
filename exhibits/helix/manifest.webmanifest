@@ -1,0 +1,16 @@
+{
+  "name": "Helix",
+  "short_name": "Helix",
+  "description": "Playable analog-style synth and light field.",
+  "display": "standalone",
+  "start_url": "./",
+  "background_color": "#e4dfd4",
+  "theme_color": "#121214",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
