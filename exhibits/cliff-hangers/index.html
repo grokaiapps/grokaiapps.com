@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#291b3a"><meta name="description" content="Three prices. Twenty-five steps. Keep the yodeling mountain climber on the mountain in this classic Cliff Hangers fan game.">
+<title>Cliff Hangers — Showtime</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css"><script type="module" src="./game.js"></script>
+</head>
+<body>
+<div id="app" class="app">
+  <header class="topbar"><a class="series" href="../plinko/" title="Play our Plinko game"><span class="dollar" aria-hidden="true">$</span><span>COME ON DOWN<small>THE PRICE IS RIGHT · FAN GAMES</small></span></a><div class="utilities"><button id="sound" class="icon-button" aria-label="Mute sound" aria-pressed="true" title="Sound on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 3a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button><button id="help" class="icon-button" aria-label="How to play"><span aria-hidden="true">?</span></button><button id="restart" class="icon-button" aria-label="New game" title="New game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7"/></svg></button></div></header>
+
+  <main class="stage">
+    <section class="mountain-section" aria-label="Mountain game board">
+      <div class="masthead"><div class="title"><span>CLIFF</span><h1>HANGERS</h1></div><div class="step-card"><span>STEPS LEFT</span><strong id="steps-left">25</strong><small id="position-label">AT THE START</small></div></div>
+      <div class="board-space" id="board-space"><div id="board-frame" class="board-frame"><canvas id="board" width="1100" height="760" aria-label="Mountain track with twenty-five safe steps. The climber starts at zero."></canvas><div id="board-message" class="board-message" aria-hidden="true"><span id="message-small"></span><strong id="message-big"></strong></div><div class="board-loading" id="board-loading">SETTING THE STAGE…</div></div></div>
+      <div class="mountain-caption"><span>1 DOLLAR OFF = 1 STEP UP</span><span>25 IS SAFE. 26 IS OVER.</span></div>
+    </section>
+
+    <section class="contestant" aria-label="Prize guessing controls">
+      <div class="grand-prize"><div><span class="eyebrow">YOU’RE PLAYING FOR</span><strong>A Swiss Alps getaway</strong></div><div class="prize-value"><span>6 NIGHTS · 2 PEOPLE</span><b>$8,764</b></div></div>
+      <div class="round-heading"><span class="eyebrow" id="round-label">SMALL PRIZE 1 OF 3</span><div class="round-dots" aria-label="Round progress"><span id="dot-0" class="current">1</span><span id="dot-1">2</span><span id="dot-2">3</span></div></div>
+      <article class="prize-card"><div id="product-picture" class="product-picture" role="img" aria-label="Kitchen timer"></div><div class="product-copy"><span class="product-category" id="product-category">FOR THE KITCHEN</span><h2 id="product-name">Digital kitchen timer</h2><p id="product-description">A magnetic countdown timer with a large digital display.</p></div></article>
+      <div id="guess-panel" class="guess-panel"><div class="guess-heading"><label id="guess-label">What’s the retail price?</label><span>IN WHOLE DOLLARS</span></div><div class="guess-row"><button id="guess" class="guess-input" aria-labelledby="guess-label" aria-haspopup="dialog"><span>$</span><strong id="guess-value">—</strong><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 12-12 4 4L8 20H4v-4ZM14 6l4 4"/></svg></button><button id="lock" class="primary" disabled>LOCK IT IN</button></div><p id="status" class="status" role="status" aria-live="polite">Tap the price box to make your first guess.</p></div>
+      <div id="reveal-panel" class="reveal-panel" hidden><div class="price-comparison"><div><span>YOUR GUESS</span><strong id="reveal-guess">$0</strong></div><div><span>ACTUAL PRICE</span><strong id="reveal-actual">$0</strong></div><div><span>OFF BY</span><strong id="reveal-error">$0</strong></div></div><p id="reveal-message" role="status"></p><button id="next" class="primary">NEXT PRIZE</button></div>
+      <div class="small-prizes" aria-label="Small prizes won"><span class="eyebrow">PRIZES SECURED</span><div id="won-prizes">Keep him on the mountain to win.</div></div>
+    </section>
+  </main>
+  <footer><span>AN INDEPENDENT FAN RE-CREATION</span><span>SIMULATED PRIZES · JUST FOR FUN</span></footer>
+</div>
+
+<dialog id="keypad-dialog" class="dialog keypad-dialog"><button class="close" data-close="keypad-dialog" aria-label="Cancel price entry">×</button><span class="eyebrow">YOUR PRICE GUESS</span><h2 id="keypad-prize">Digital kitchen timer</h2><output id="keypad-value" class="keypad-value">$—</output><div class="keypad" id="keypad"><button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button><button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button><button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button><button data-key="clear" class="key-small">CLEAR</button><button data-key="0">0</button><button data-key="back" aria-label="Delete last digit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H21v14H9L2 12l7-7Zm4 4 5 6m0-6-5 6"/></svg></button></div><button id="set-price" class="primary" disabled>SET MY PRICE</button></dialog>
+
+<dialog id="help-dialog" class="dialog help-dialog"><button class="close" data-close="help-dialog" aria-label="Close instructions">×</button><span class="eyebrow">THE CLASSIC RULES</span><h2>Keep him on<br>the mountain.</h2><ol class="rules"><li><strong>Guess three prices.</strong> Price each small prize in whole dollars, one at a time.</li><li><strong>Every dollar counts.</strong> High or low, each dollar of error moves the climber one step. Your errors add together.</li><li><strong>Watch, then find out.</strong> The actual price stays hidden until he stops—or falls.</li><li><strong>Stay at 25 or below.</strong> Survive all three guesses to win the grand prize. Step 26 sends him over the cliff. On a loss, keep the small prizes secured before that guess.</li></ol><button id="test-sound" class="secondary">TEST THE YODEL</button><p id="sound-test-status" class="sound-test-status" role="status"></p><p class="fine-print">Prices and prizes are fictional game values. The mountain artwork and synthesized yodel-style music are recreations, not the original television assets. Not affiliated with CBS, Fremantle, or The Price Is Right.</p><a class="source-link" href="https://en.wikipedia.org/wiki/List_of_The_Price_Is_Right_pricing_games#Cliff_Hangers" target="_blank" rel="noopener noreferrer">Original game rules ↗</a><button class="primary" data-close="help-dialog">LET’S PLAY</button></dialog>
+
+<dialog id="result-dialog" class="dialog result-dialog"><span id="result-eyebrow" class="eyebrow">HE MADE IT!</span><h2 id="result-title">You’re off to<br>the Swiss Alps.</h2><div id="result-number" class="result-number">$8,764</div><p id="result-copy"></p><div id="result-table" class="result-table"></div><p id="result-kept" class="result-kept"></p><button id="play-again" class="primary">PLAY AGAIN</button><button class="text-button" data-close="result-dialog">Back to the mountain</button></dialog>
+<dialog id="restart-dialog" class="dialog restart-dialog"><span class="eyebrow">ONE MORE CLIMB?</span><h2>Start a new game?</h2><p>Your current guesses will be cleared.</p><button id="confirm-restart" class="primary">NEW GAME</button><button class="secondary" data-close="restart-dialog">KEEP PLAYING</button></dialog>
+</body></html>
