@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#073b36">
+  <meta name="description" content="Come on down! Play a classic Plinko board, earn chips in the pricing round, and aim for the $10,000 slot.">
+  <title>Plinko — Showtime</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css?v=2">
+  <script type="module" src="./game.js?v=2"></script>
+</head>
+<body>
+  <div class="show">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">$</span><span>COME ON DOWN!<small>A PRICE IS RIGHT–INSPIRED FAN GAME</small></span></div>
+      <nav class="utilities" aria-label="Game options">
+        <button id="sound" class="icon-button" aria-label="Mute sound" aria-pressed="true" title="Sound on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 3a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button>
+        <button id="fullscreen" class="icon-button" aria-label="Enter full screen" title="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button>
+        <button id="help" class="icon-button" aria-label="How to play" title="How to play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1.5 1-1.5 1-1.5 3m0 3h.01"/></svg></button>
+      </nav>
+    </header>
+
+    <main class="stage">
+      <aside class="score-panel">
+        <div class="score-card">
+          <div class="eyebrow">YOUR WINNINGS</div>
+          <output id="score" class="score">$0</output>
+          <div class="score-rule"></div>
+          <div class="potential">PLAYING FOR UP TO <strong id="potential">$50,000</strong></div>
+        </div>
+        <div class="desktop-copy"><span class="little-star" aria-hidden="true">✦</span><p>A little luck.<br>A lot of <em>Plinko.</em></p></div>
+        <button id="pricing" class="pricing-link">Play the pricing round <span aria-hidden="true">↗</span><small>Earn your chips, just like on TV.</small></button>
+      </aside>
+
+      <section class="board-section" aria-label="Plinko board">
+        <div class="marquee"><span class="marquee-line" aria-hidden="true"></span><h1>PLINKO</h1><span class="marquee-line" aria-hidden="true"></span></div>
+    <div class="console" role="group" aria-label="Aim and drop controls">
+      <div class="aim-control"><div class="aim-caption"><label for="aim">YOUR DROP POSITION</label><span>Drag the chip or slide to aim</span></div><input type="range" id="aim" min="0" max="100" value="50" step="0.5" aria-label="Chip drop position" aria-valuetext="Center"><div class="aim-ends" aria-hidden="true"><span>LEFT</span><span>CENTER</span><span>RIGHT</span></div></div>
+      <div class="drop-control"><p id="status" role="status" aria-live="polite">Five chips. The board is yours.</p><button class="drop-button" id="drop"><span class="drop-token" aria-hidden="true">$</span><span id="drop-label">DROP CHIP</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg></button></div>
+      <button class="new-game" id="new-game" aria-label="Start a new game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7"/></svg><span>NEW GAME</span></button>
+    </div>
+        <div class="board-space">
+          <div class="board-frame" id="board-frame">
+            <div class="bulbs horizontal top" aria-hidden="true"></div><div class="bulbs horizontal bottom" aria-hidden="true"></div>
+            <div class="bulbs vertical left" aria-hidden="true"></div><div class="bulbs vertical right" aria-hidden="true"></div>
+            <canvas id="board" width="720" height="820" aria-label="Plinko board. Drag across the top and release to drop a chip, or use the aim slider above and press Drop chip. Prize slots, left to right: 100 dollars, 500 dollars, 1,000 dollars, zero, 10,000 dollars, zero, 1,000 dollars, 500 dollars, 100 dollars."></canvas>
+            <div id="board-callout" class="board-callout" aria-hidden="true"><span id="callout-label"></span><strong id="callout-value"></strong></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="chips-panel">
+        <div class="chip-summary"><div class="eyebrow">YOUR CHIPS <span id="chip-count">5 / 5</span></div><div id="chips" class="chips" aria-label="5 chips remaining"></div></div>
+        <div class="drop-history"><div class="eyebrow">THE DROPS</div><ol id="history"></ol></div>
+        <div class="center-note"><span class="eyebrow">THAT MIDDLE SLOT</span><strong>$10,000</strong><span>Go on. Make it a big one.</span></div>
+      </aside>
+    </main>
+
+
+    <div class="footnote"><span id="mode-label">FIVE-CHIP QUICK PLAY</span><button id="mobile-pricing">Pricing round</button><span>JUST FOR FUN · NO REAL MONEY</span></div>
+  </div>
+
+  <dialog id="help-dialog" class="show-dialog">
+    <button class="close-dialog icon-button" aria-label="Close instructions" data-close="help-dialog">×</button>
+    <span class="eyebrow">WELCOME TO THE BOARD</span><h2>Let the chips fall.</h2>
+    <div class="rule"><b>01</b><p><strong>Pick your spot.</strong> Drag along the board or use the slider. With a keyboard, use the slider’s arrow keys and press Drop chip.</p></div>
+    <div class="rule"><b>02</b><p><strong>Make the drop.</strong> Your chip bounces off the pegs. The slot it lands in adds to your winnings. A $0 slot only scores zero for that chip.</p></div>
+    <div class="rule"><b>03</b><p><strong>Try the pricing round.</strong> Start with one free chip. Identify the correct digit in each of four sample prize prices to earn up to four more.</p></div>
+    <p class="fine-print">Quick play gives you all five chips. Prize prices in the pricing round are fictional game values. This independent fan game is not affiliated with The Price Is Right, CBS, or Fremantle.</p>
+    <p class="fine-print"><a href="https://en.wikipedia.org/wiki/List_of_The_Price_Is_Right_pricing_games#Plinko" target="_blank" rel="noopener noreferrer">About the original Plinko rules ↗</a></p>
+    <button class="primary" data-close="help-dialog">LET’S PLAY</button>
+  </dialog>
+
+  <dialog id="pricing-dialog" class="show-dialog pricing-dialog">
+    <button class="close-dialog icon-button" aria-label="Close pricing round" data-close="pricing-dialog">×</button>
+    <div id="pricing-content"></div>
+  </dialog>
+
+  <dialog id="results-dialog" class="show-dialog results-dialog">
+    <span class="eyebrow">THAT’S YOUR GAME!</span><h2 id="result-title">Look at that!</h2><div class="final-score" id="final-score">$0</div><p id="result-subtitle"></p>
+    <div id="result-drops" class="result-drops"></div>
+    <button id="replay" class="primary">PLAY AGAIN · 5 CHIPS</button><button id="result-pricing" class="secondary">PLAY THE PRICING ROUND</button><button class="text-button" data-close="results-dialog">Back to the board</button>
+  </dialog>
+  <dialog id="reset-dialog" class="show-dialog compact-dialog">
+    <span class="eyebrow">A FRESH START</span><h2>New game?</h2><p>Your current game will be cleared.</p><button id="confirm-reset" class="primary">YES, FIVE NEW CHIPS</button><button class="secondary" data-close="reset-dialog">KEEP PLAYING</button>
+  </dialog>
+</body>
+</html>
