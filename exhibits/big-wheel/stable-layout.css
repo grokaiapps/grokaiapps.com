@@ -1,0 +1,135 @@
+/* A result must never borrow height from the wheel. Keep every dock row
+   the same size through payment, scoring, cash-out and replay. */
+.console{align-content:start}
+.console .round-meta{height:24px;min-height:24px;max-height:24px}
+.console .score,.console .round-readout{height:48px;min-height:0;align-self:center}
+.console .announcement{
+  --message-height:112px;
+  height:var(--message-height);min-height:var(--message-height);max-height:var(--message-height);
+  contain:size;overflow:visible;
+  touch-action:manipulation;scrollbar-gutter:auto;scrollbar-width:none;
+  scrollbar-color:#a6c9df70 transparent;scroll-behavior:auto;
+  align-content:start;grid-auto-rows:max-content;overflow-anchor:none;
+  padding:5px 3px 3px 0;
+}
+
+.console .announcement[data-result]{grid-template-rows:max-content max-content}
+/* Show the reward at the top, not below an off-screen result. The score
+   breakdown returns to this same fixed slot after “Got it”. */
+.console .announcement[data-reward]{grid-template-rows:max-content;gap:0}
+.console .announcement[data-reward] .panel-reward{grid-area:1/1;padding:6px 0;animation:reward-reveal .7s cubic-bezier(.16,.7,.2,1) both}
+.console .announcement[data-reward] .play-message{display:none}
+.console .announcement:focus-visible{outline:2px solid var(--scene-accent);outline-offset:2px;border-radius:9px}
+.console .announcement::-webkit-scrollbar{width:4px}
+.console .announcement::-webkit-scrollbar-thumb{background:#a6c9df70;border-radius:4px}
+.console .actions{height:52px;min-height:52px;max-height:52px}
+.console .actions>.primary,.console .actions>.secondary,.console .actions>#next{
+  height:52px;min-height:52px;max-height:52px;
+}
+@media(max-width:700px){
+  .console .announcement{--message-height:88px}
+  .console .score,.console .round-readout{height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .console .announcement[data-reward] .panel-reward{animation:none}
+}
+
+/* Compact mobile dock: more of the fixed viewport belongs to the wheel. */
+.console[data-wheel-gesture]{pointer-events:none;user-select:none;-webkit-user-select:none;touch-action:none}
+.console{transition:opacity .16s ease-out}
+.console[data-wheel-gesture]{opacity:0}
+@media(prefers-reduced-motion:reduce){.console{transition:none}}
+@media(max-width:700px){
+ .console{padding:6px 10px;gap:3px;border-radius:14px}
+ .console .round-meta{height:18px;min-height:18px;max-height:18px;font-size:11px}
+ .console .round-meta>b{font-size:10px;padding:1px 6px}
+ .console[data-phase=complete] .round-meta>span{font-size:12px}
+ .console .score,.console .round-readout{height:36px}
+ .console .score strong{font-size:25px}
+ .console .history>span{padding:2px 5px}
+ .console .history b{font-size:12px}
+ .console .round-won{min-height:13px;font-size:11px;line-height:1.1;margin-top:2px}
+ .console .receipt-link{font-size:11px;line-height:1.1}
+ .console .announcement{--message-height:64px;padding-top:3px}
+ .console .actions,.console .actions>.primary,.console .actions>.secondary,.console .actions>#next{height:44px;min-height:44px;max-height:44px}
+ .console .actions>#next{padding:4px 8px;gap:6px}
+ .console .actions #next .next-copy strong{font-size:14px}
+ .console .actions #next .next-copy small{font-size:10px}
+ .console .announcement[data-reward] .panel-reward{grid-template-columns:28px minmax(0,1fr) 44px;gap:6px;padding:2px 0}
+ .console .reward-art{width:28px;height:36px}
+ .console .reward-art img,.console .reward-art svg{width:32px;height:32px}
+ .console .reward-copy{gap:1px}
+ .console .reward-copy>strong{font-size:15px}
+ .console .reward-dismiss{min-height:44px;padding:2px}
+ .console .result-card{padding:5px 7px;gap:3px 6px}
+}
+
+/* One compact summary; the full explanation opens only on request. */
+.console .announcement,.console .announcement[data-result]{--message-height:72px;grid-template-rows:1fr;gap:0;padding:2px 0}
+.console .play-message{align-self:center}
+.console .play-message #message{display:none}
+.console .play-message h2{font-size:14px;line-height:1.3}
+.console .result-card{grid-template-columns:minmax(0,1fr) 44px;gap:3px 6px;padding:5px 7px;align-self:center;overflow:visible}
+.console .result-icon{display:none}
+.console .result-heading{grid-column:1;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:1px 7px}
+.console .result-heading h2{font-size:12px;line-height:1.2}
+.console .result-heading strong{font-size:16px;line-height:1.2;white-space:nowrap}
+.console .result-close{grid-column:2;grid-row:1/3;align-self:center;margin:0;width:44px;min-height:44px;padding:0;font:600 10px/1.2 Manrope,sans-serif;color:var(--scene-accent);background:#cce9ff09;border:1px solid #cce9ff20}
+.console .result-card .result-summary{grid-column:1;font-size:11px;line-height:1.25;margin:0}
+.console #result-why,.console #result-detail,.console #result-next{display:none}
+.console #money-cue-detail{display:none}
+.console .money-cue{align-self:center}
+.console #money-cue-path{font-size:11px;line-height:1.3}
+.console .round-won{display:none}
+.console .score,.console .round-readout{height:30px}
+.console .round-meta{height:16px;min-height:16px;max-height:16px}
+.console .round-meta>b{padding:0 6px}
+#result-details #detail-amount{display:block;font-size:24px;color:var(--scene-accent)}
+#result-details p{font-size:13px;line-height:1.4;margin:10px 0}
+
+.console .score .total-block{display:flex;align-items:center;gap:8px}
+.console .score span{font-size:11px;max-width:44px;line-height:1.2;margin:0}
+.console .score strong{font-size:25px;line-height:1;margin:0}
+.console .history>span{flex-direction:row;justify-content:space-between;gap:4px;padding:3px 5px}
+.console .history b{font-size:13px}
+
+/* Let the wheel fill more of the mobile play area without changing its
+   proportions. Its left pointer and right rim stay inside the screen. */
+@media(max-width:700px){
+ .show{padding-left:5px;padding-right:5px}
+ .stage{gap:0}
+ .wheel-area{overflow:hidden}
+ .wheel-area canvas{transform:translateX(1.8vw) scale(1.075);transform-origin:center center}
+ .wheel-area .wallet{top:1px;z-index:2;padding:0 5px}
+ .console{padding:5px 9px;gap:2px}
+ .console .round-meta{height:15px;min-height:15px;max-height:15px}
+ .console .score,.console .round-readout{height:28px}
+ .console .announcement,.console .announcement[data-result]{--message-height:67px}
+ .console .actions,.console .actions>.primary,.console .actions>.secondary,.console .actions>#next{height:44px;min-height:44px;max-height:44px}
+}
+@media(max-width:359px){
+ .wheel-area canvas{transform:translateX(2vw) scale(1.065)}
+ .console .announcement,.console .announcement[data-result]{--message-height:70px}
+}
+
+/* Reserve room for the bank above the drum. Use the space recovered from
+   the header and dock to keep the wheel centered at its larger size. */
+@media(max-width:700px){
+ header{height:46px;min-height:46px;box-sizing:border-box;padding:0 6px;border-radius:15px}
+ header #games-button{font-size:13px}
+ header .title h1{font-size:20px}
+ .show{gap:2px}
+ .stage{gap:1px}
+ .wheel-area canvas{height:calc(100% - 32px);margin-top:32px;transform:translateX(1.8vw) scale(1.045)}
+ .wheel-area .wallet{top:1px}
+ .console{padding:4px 9px;gap:1px}
+ .console .round-meta{font-size:10px}
+ .console .score,.console .round-readout{height:28px}
+ .console .score strong{font-size:23px}
+ .console .announcement,.console .announcement[data-result]{--message-height:60px}
+ .console .result-heading strong{font-size:15px}
+}
+@media(max-width:359px){
+ .wheel-area canvas{transform:translateX(2vw) scale(1.035)}
+ .console .announcement,.console .announcement[data-result]{--message-height:68px}
+}

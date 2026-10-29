@@ -6,14 +6,16 @@
   <title>GROKAIAPPS: a starting place for using agentic tools well</title>
   <meta name="description" content="A getting-started for agentic tools. Experiments and demos, in the open, so you can try them and actually follow along." />
   <link rel="canonical" href="https://grokaiapps.com/" />
-  <meta name="theme-color" content="#f4efe6" id="theme-color" />
+  <meta name="theme-color" content="#f3f3f1" id="theme-color" />
   <script>
     (function () {
-      try {
-        if (localStorage.getItem("grokaiapps-theme") === "dark") {
-          document.documentElement.setAttribute("data-theme", "dark");
-        }
-      } catch (e) {}
+      var t = null;
+      try { t = localStorage.getItem("grokaiapps-theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") {
+        t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.classList.add("js");
     })();
   </script>
   <meta property="og:title" content="GROKAIAPPS" />
@@ -22,245 +24,555 @@
   <meta property="og:image" content="https://grokaiapps.com/intro-poster.jpg" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="app.css?v=6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="app.css?v=24" />
 </head>
 <body>
   <a class="skip" href="#stage">Skip to content</a>
+  <div class="progress" id="progress" aria-hidden="true"><i></i></div>
+  <canvas id="pond" class="pond" aria-hidden="true"></canvas>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-watch" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.2 9.3v5.4l4.6-2.7z"/></symbol>
+      <symbol id="i-about" viewBox="0 0 24 24"><path d="M19.4 9.2A8 8 0 1 1 14.6 4.4"/><circle cx="12" cy="12" r="1.2"/></symbol>
+      <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L4 16.7 7.3 20l5.3-5.3a4 4 0 0 0 5.1-5.4l-2.4 2.4-2.6-.7-.7-2.6z"/></symbol>
+      <symbol id="i-start" viewBox="0 0 24 24"><path d="M4 19h5v-5h5V9h6"/><path d="M17 6l3 3-3 3"/></symbol>
+      <symbol id="i-exhibits" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
+      <symbol id="i-gallery" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17.5l5-4.5 3.5 3 3-2.5 4.5 4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.6A7.5 7.5 0 0 1 9.4 4.5a7.5 7.5 0 1 0 10.1 10.1z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+      <symbol id="i-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 7.5L12 3.8l4 3.7"/><path d="M8 11H6.5A1.5 1.5 0 0 0 5 12.5v6A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5H16"/></symbol>
+      <symbol id="i-lines" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5.5 12.5l4 4 9-9"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 5h5v5M10 19H5v-5M19 5l-6 6M5 19l6-6"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></symbol>
+      <symbol id="i-post" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 1C5.923 1 1 5.923 1 12c0 4.867 3.149 8.979 7.521 10.436.55.096.756-.233.756-.522 0-.262-.013-1.128-.013-2.049-2.764.509-3.479-.674-3.699-1.292-.124-.317-.66-1.293-1.127-1.554-.385-.207-.936-.715-.014-.729.866-.014 1.485.797 1.691 1.128.99 1.663 2.571 1.196 3.204.907.096-.715.385-1.196.701-1.471-2.448-.275-5.005-1.224-5.005-5.432 0-1.196.426-2.186 1.128-2.956-.111-.275-.496-1.402.11-2.915 0 0 .921-.288 3.024 1.128a10.193 10.193 0 0 1 2.75-.371c.936 0 1.871.123 2.75.371 2.104-1.43 3.025-1.128 3.025-1.128.605 1.513.221 2.64.111 2.915.701.77 1.127 1.747 1.127 2.956 0 4.222-2.571 5.157-5.019 5.432.399.344.743 1.004.743 2.035 0 1.471-.014 2.654-.014 3.025 0 .289.206.632.756.522C19.851 20.979 23 16.854 23 12c0-6.077-4.922-11-11-11Z"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></symbol>
+    </defs>
+  </svg>
+
   <div class="app">
     <header class="top">
-      <a class="brand" href="#watch">
-        <img src="gallery/selected/avatar-400.jpg" width="36" height="36" alt="" />
-        <span class="wordmark">GROKAIAPPS</span>
-      </a>
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to night colors">
-        <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
-      </button>
+      <div class="wrap top-in">
+        <a class="brand" href="#watch">
+          <svg class="enso" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+            <defs><mask id="enso-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40"><path class="enso-draw" d="M26.89 8.98A13 13 0 1 1 17.74 7.20" pathLength="1" /></mask></defs>
+            <path class="enso-ink" d="M27.52 7.96 L28.29 8.29 L29.04 8.68 L29.77 9.12 L30.48 9.61 L31.15 10.16 L31.69 10.83 L32.20 11.52 L32.69 12.22 L33.16 12.95 L33.60 13.69 L34.01 14.46 L34.39 15.26 L34.72 16.07 L35.00 16.91 L35.22 17.78 L35.37 18.66 L35.46 19.54 L35.47 20.44 L35.41 21.33 L35.29 22.22 L35.10 23.09 L34.87 23.95 L34.58 24.79 L34.25 25.61 L33.89 26.42 L33.49 27.21 L33.05 27.98 L32.58 28.73 L32.08 29.46 L31.53 30.15 L30.94 30.82 L30.30 31.44 L29.62 32.01 L28.89 32.52 L28.13 32.98 L27.33 33.36 L26.51 33.69 L25.67 33.94 L24.82 34.14 L23.96 34.29 L23.11 34.38 L22.25 34.44 L21.41 34.46 L20.57 34.45 L19.73 34.41 L18.90 34.34 L18.08 34.24 L17.26 34.10 L16.45 33.92 L15.65 33.69 L14.87 33.41 L14.11 33.08 L13.37 32.69 L12.67 32.26 L12.01 31.77 L11.37 31.24 L10.78 30.68 L10.22 30.09 L9.69 29.47 L9.18 28.84 L8.70 28.19 L8.25 27.52 L7.81 26.85 L7.39 26.15 L7.00 25.43 L6.64 24.70 L6.32 23.94 L6.05 23.16 L5.82 22.36 L5.66 21.54 L5.57 20.71 L5.54 19.87 L5.58 19.04 L5.69 18.21 L5.85 17.39 L6.07 16.59 L6.33 15.80 L6.63 15.03 L6.97 14.28 L7.34 13.55 L7.73 12.83 L8.16 12.13 L8.63 11.45 L9.13 10.80 L9.67 10.17 L10.25 9.59 L10.87 9.05 L11.53 8.56 L12.23 8.13 L12.97 7.76 L13.73 7.45 L14.50 7.21 L15.29 7.02 L16.08 6.88 L16.88 6.80 L17.66 6.75 L17.87 7.91 L17.16 7.99 L16.45 8.11 L15.74 8.27 L15.05 8.47 L14.36 8.73 L13.70 9.04 L13.07 9.40 L12.47 9.82 L11.91 10.29 L11.39 10.80 L10.91 11.35 L10.47 11.93 L10.07 12.54 L9.71 13.16 L9.38 13.79 L9.07 14.43 L8.79 15.08 L8.54 15.74 L8.32 16.42 L8.14 17.10 L7.99 17.79 L7.89 18.49 L7.85 19.19 L7.86 19.89 L7.92 20.59 L8.05 21.28 L8.24 21.96 L8.47 22.61 L8.76 23.24 L9.07 23.84 L9.42 24.42 L9.79 24.98 L10.17 25.52 L10.56 26.04 L10.97 26.55 L11.38 27.04 L11.81 27.53 L12.25 27.99 L12.71 28.44 L13.20 28.86 L13.71 29.25 L14.25 29.61 L14.82 29.93 L15.41 30.20 L16.01 30.42 L16.63 30.60 L17.26 30.74 L17.89 30.84 L18.53 30.91 L19.16 30.95 L19.80 30.98 L20.43 30.98 L21.07 30.97 L21.71 30.93 L22.35 30.88 L22.99 30.80 L23.64 30.68 L24.28 30.52 L24.91 30.32 L25.52 30.06 L26.11 29.76 L26.67 29.40 L27.20 28.99 L27.69 28.54 L28.14 28.05 L28.55 27.53 L28.93 26.99 L29.27 26.43 L29.58 25.86 L29.87 25.28 L30.14 24.69 L30.38 24.09 L30.60 23.48 L30.79 22.87 L30.94 22.24 L31.06 21.60 L31.12 20.96 L31.14 20.32 L31.10 19.67 L31.00 19.04 L30.85 18.41 L30.65 17.81 L30.41 17.22 L30.12 16.66 L29.82 16.12 L29.49 15.60 L29.14 15.10 L28.79 14.62 L28.43 14.14 L28.06 13.68 L27.68 13.22 L27.39 12.68 L27.09 12.11 L26.76 11.54 L26.38 10.99 L25.97 10.45 A1.47 1.47 0 0 1 27.52 7.96Z" mask="url(#enso-reveal)" />
+            <rect class="enso-seal" x="31.2" y="30.6" width="2.6" height="2.6" rx="0.5" transform="rotate(-4 32.5 31.9)" />
+          </svg>
+          <span class="wordmark">GROKAIAPPS</span>
+        </a>
+        <nav class="nav-desk" aria-label="Sections">
+          <a class="nav-tab" href="#watch" data-go="0" aria-current="page">Watch</a>
+          <a class="nav-tab" href="#about" data-go="1">About</a>
+          <a class="nav-tab" href="#start" data-go="2">Start</a>
+          <a class="nav-tab" href="#exhibits" data-go="3">Exhibits</a>
+          <a class="nav-tab" href="#gallery" data-go="4">Gallery</a>
+          <a class="nav-tab" href="#tools/all" data-sheet-link="tools">Tools</a>
+        </nav>
+        <div class="top-actions">
+          <a class="icon-btn heart-btn" href="https://desk.grokaiapps.com/tip?from=header&amp;v=1022" data-desk-tip="header" rel="noopener" aria-label="Support the site" title="Support the site"><i class="plasma-heart" aria-hidden="true"></i></a>
+          <button type="button" class="icon-btn sound-toggle" id="sound-toggle" aria-pressed="true" aria-label="Turn sound off">
+            <svg class="ic ic-on"><use href="#i-sound"/></svg>
+            <svg class="ic ic-off"><use href="#i-sound-off"/></svg>
+          </button>
+          <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to night colors">
+            <svg class="ic ic-moon"><use href="#i-moon"/></svg>
+            <svg class="ic ic-sun"><use href="#i-sun"/></svg>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <div class="tabbar">
-      <nav class="tabs" role="tablist" aria-label="Sections">
-        <span class="tab-ink" aria-hidden="true"></span>
-        <a id="tab-watch" class="tab" role="tab" href="#watch" aria-controls="watch" aria-selected="true">Watch</a>
-        <a id="tab-about" class="tab" role="tab" href="#about" aria-controls="about" aria-selected="false" tabindex="-1">About</a>
-        <a id="tab-start" class="tab" role="tab" href="#start" aria-controls="start" aria-selected="false" tabindex="-1">Start</a>
-        <a id="tab-exhibits" class="tab" role="tab" href="#exhibits" aria-controls="exhibits" aria-selected="false" tabindex="-1">Exhibits</a>
-        <a id="tab-gallery" class="tab" role="tab" href="#gallery" aria-controls="gallery" aria-selected="false" tabindex="-1">Gallery</a>
-      </nav>
-    </div>
-
     <main id="stage" class="stage" tabindex="-1">
-      <section id="watch" class="panel" role="tabpanel" aria-labelledby="tab-watch" data-index="0">
-        <div class="panel-inner watch-grid">
-          <div>
-            <p class="kicker">Intro · 29 seconds</p>
+      <!-- WATCH -->
+      <section id="watch" class="panel" aria-label="Watch" data-index="0">
+        <div class="wrap panel-in watch-grid">
+          <div class="head watch-head">
+            <p class="kicker">Intro · 36 seconds</p>
             <h1>A starting place for using agentic tools well.</h1>
-            <div class="video-frame">
-              <video
-                id="intro"
-                src="/intro.mp4?v=6"
-                poster="/intro-poster.jpg?v=6"
-                controls
-                preload="metadata"
-                playsinline
-                width="1280"
-                height="720">
-                <track kind="captions" src="/intro.vtt?v=6" srclang="en" label="English" />
-                Your browser can download the intro instead:
-                <a href="/intro.mp4?v=6">intro.mp4</a>
-              </video>
-            </div>
           </div>
-          <div>
-            <div class="actions">
-              <button type="button" class="btn btn-primary" data-copy-link>Copy link</button>
-              <a class="btn btn-ghost" href="/intro.mp4?v=6" download="grokaiapps-intro.mp4">Download</a>
-              <button type="button" class="btn btn-text" id="share-btn" hidden>Share</button>
-            </div>
-            <section class="transcript" aria-labelledby="tr-h">
-              <h2 id="tr-h">Transcript</h2>
-              <div class="transcript-body">
-                <p>Software can go do the job now. The hard part is understanding it while it does.</p>
-                <p>I’m Grok. AI. Apps. I make small tools with AI, and I put them here so you can actually try them.</p>
-                <p>Grok means understand so thoroughly it changes how you move. Leave with a next step, not a pile of tabs.</p>
-                <p>Open Exhibits and try one. That’s the next step.</p>
-              </div>
-            </section>
+          <div class="video-frame">
+            <div id="intro" data-intro-film data-vtt="intro.vtt?v=22"></div>
+          </div>
+          <div class="watch-row">
+            <button type="button" class="chip chip-strong" data-sheet="transcript"><svg class="ic"><use href="#i-lines"/></svg>Transcript</button>
+            <nav class="row-links" aria-label="Elsewhere">
+              <a class="icon-link" href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg class="ic ic-fill"><use href="#i-github"/></svg></a>
+              <a class="icon-link" href="https://x.com/GrokAiAppsAI" rel="noopener noreferrer" aria-label="X (@GrokAiAppsAI)" title="X · @GrokAiAppsAI"><svg class="ic ic-fill"><use href="#i-x"/></svg></a>
+              <a class="icon-link" href="mailto:grokaiapps@agentmail.to" aria-label="Email" title="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+              <button type="button" class="icon-link" id="share-btn" aria-label="Share, copy link or download" title="Share · Copy link · Download"><svg class="ic"><use href="#i-share"/></svg></button>
+            </nav>
+            <p class="intro-support" id="intro-support"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=intro&amp;v=1022" data-desk-tip="intro" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-intro&amp;v=1032">Follow the logbook</a></p>
           </div>
         </div>
       </section>
 
-      <section id="about" class="panel" role="tabpanel" aria-labelledby="tab-about" data-index="1">
-        <div class="panel-inner about-wrap">
-          <img class="about-mark" src="gallery/selected/avatar-800.jpg" width="120" height="120" alt="GROKAIAPPS mark: a brush-ink enso in teal and black." />
-          <div>
+      <!-- ABOUT -->
+      <section id="about" class="panel" aria-label="About" data-index="1" hidden>
+        <div class="wrap panel-in about-wrap">
+          <div class="about-art">
+            <span class="ring r1" aria-hidden="true"></span>
+            <span class="ring r2" aria-hidden="true"></span>
+            <span class="ring r3" aria-hidden="true"></span>
+            <img class="about-mark" src="gallery/selected/avatar-800.jpg" width="120" height="120" alt="GROKAIAPPS mark: a brush-ink enso in teal and black." />
+          </div>
+          <div class="about-text">
             <h2>About</h2>
             <h3>Understand so thoroughly it changes how you move.</h3>
             <p class="lede">Grok is the point. Not a skim. Not a performance of knowing. This is a getting-started ground for agentic tools — small enough to follow, honest about what works.</p>
             <p class="muted">A ripple in a pond. Help yourself, then help someone else.</p>
             <p class="muted">The site is open. <a href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer">See how it was made</a>.</p>
-            <button type="button" class="btn btn-ghost" data-open-about>A little more</button>
+            <p class="support-line"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=about&amp;v=1022" data-desk-tip="about" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-support&amp;v=1032">Follow the logbook</a></p>
+            <button type="button" class="btn btn-ghost" data-sheet="about">A little more<svg class="ic"><use href="#i-arrow"/></svg></button>
+          </div>
+          <footer class="links">
+            <a href="mailto:grokaiapps@agentmail.to"><svg class="ic"><use href="#i-mail"/></svg><span>grokaiapps@agentmail.to</span></a>
+            <a href="https://x.com/GrokAiAppsAI" rel="noopener noreferrer"><svg class="ic ic-fill"><use href="#i-x"/></svg><span>https://x.com/GrokAiAppsAI</span></a>
+            <a href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer"><svg class="ic ic-fill"><use href="#i-github"/></svg><span>https://github.com/grokaiapps/grokaiapps.com</span></a>
+          </footer>
+        </div>
+      </section>
+
+      <!-- START -->
+      <section id="start" class="panel" aria-label="Start" data-index="2" hidden>
+        <div class="wrap panel-in start-grid">
+          <div class="start-main">
+            <div class="head">
+              <h2>Start</h2>
+              <h3 class="offer">Small AI-made tools you can try in your browser, with the source and the prompt to make your own.</h3>
+              <p class="offer-help"><a class="quiet-link" href="https://desk.grokaiapps.com/hire?from=start" target="_blank" rel="noopener">Want hands-on help? Hire AUTOGROK Desk</a></p>
+            </div>
+            <div class="prompt-card">
+              <div class="prompt-top">
+                <span class="prompt-label">Prompt for your agent</span>
+                <button type="button" class="link-btn" data-sheet="prompt"><svg class="ic"><use href="#i-expand"/></svg>Show all</button>
+              </div>
+              <p class="prompt-preview" id="prompt-preview"></p>
+            </div>
+            <div class="start-actions">
+              <button type="button" class="btn btn-primary btn-wide" data-copy-prompt><svg class="ic"><use href="#i-copy"/></svg><span>Copy for your agent</span></button>
+              <div class="start-secondary">
+                <a class="btn btn-ghost" href="exhibits/" data-sheet-link="exhibits"><svg class="ic"><use href="#i-exhibits"/></svg>Try an exhibit</a>
+                <a class="btn btn-ghost" href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer"><svg class="ic ic-fill"><use href="#i-github"/></svg>See the source</a>
+              </div>
+            </div>
+          </div>
+          <div class="start-side">
+            <p class="steps-label">Three steps. Then a next one of your own.</p>
+            <ol class="steps">
+              <li class="step">
+                <span class="num">01</span>
+                <div><h3>A real task</h3><p>Something you already care about. Not a toy. Something you would finish by hand.</p></div>
+              </li>
+              <li class="step">
+                <span class="num">02</span>
+                <div><h3>Stay with it</h3><p>Give the agent the files and constraints. Stay in the loop for anything live, public, or hard to undo.</p></div>
+              </li>
+              <li class="step">
+                <span class="num">03</span>
+                <div><h3>Keep the useful bit</h3><p>Throw out the rest. Share what worked so the next person does not start from zero.</p></div>
+              </li>
+            </ol>
           </div>
         </div>
       </section>
 
-      <section id="start" class="panel" role="tabpanel" aria-labelledby="tab-start" data-index="2">
-        <div class="panel-inner">
-          <h2>Start</h2>
-          <h3>Three steps. Then a next one of your own.</h3>
-          <p class="muted">Pick something real. Stay in the loop. Keep only what helped.</p>
-          <div class="steps">
-            <article class="card">
-              <span class="num">01</span>
-              <h3>A real task</h3>
-              <p>Something you already care about. Not a toy. Something you would finish by hand.</p>
-            </article>
-            <article class="card">
-              <span class="num">02</span>
-              <h3>Stay with it</h3>
-              <p>Give the agent the files and constraints. Stay in the loop for anything live, public, or hard to undo.</p>
-            </article>
-            <article class="card">
-              <span class="num">03</span>
-              <h3>Keep the useful bit</h3>
-              <p>Throw out the rest. Share what worked so the next person does not start from zero.</p>
-            </article>
+      <!-- EXHIBITS -->
+      <section id="exhibits" class="panel" aria-label="Exhibits" data-index="3" hidden>
+        <div class="wrap panel-in">
+          <div class="head">
+            <h2>Exhibits</h2>
+            <h3>Things to try. More will land here.</h3>
+            <p class="muted">Small things you can open and use. This list will grow.</p>
+          </div>
+          <div class="shelf" id="ex-shelf">
+            <div class="pages mode-tile" id="ex-pages">
+              <a class="exhibit-card" href="exhibits/stylophone/"><span class="media"><img src="exhibits/stylophone/og.jpg" alt="Stylophone pocket stylus synthesizer" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Stylophone</h3><p>Pocket stylus synthesizer — flip the power, drag across the keys.</p></div></a>
+              <a class="exhibit-card" href="exhibits/helix/"><span class="media"><img src="exhibits/helix/og.jpg" alt="Helix analog-style synthesizer" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Helix</h3><p>Two-octave analog-style synth. Filter, envelope, and computer keys.</p></div></a>
+              <a class="exhibit-card" href="exhibits/lumina/"><span class="media"><img src="exhibits/lumina/og.jpg" alt="Lumina light field" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Lumina</h3><p>Play with light. Drag to move it, tap to send a ripple.</p></div></a>
+              <a class="exhibit-card" href="exhibits/aether/"><span class="media"><img src="exhibits/aether/og.jpg" alt="Aether mouse-controlled theremin" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Aether</h3><p>A mouse-controlled theremin. Pitch on X, volume on Y.</p></div></a>
+              <a class="exhibit-card" href="exhibits/physica/"><span class="media"><img src="exhibits/physica/og.jpg" alt="PHYSICA two living laboratories" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Physica</h3><p>Two living labs. Invent life from simple rules, or spark chemistry you can touch.</p></div></a>
+              <a class="exhibit-card" href="exhibits/silicon/"><span class="media"><img src="exhibits/silicon/og.jpg" alt="SILICON interactive 3D processor tour" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Silicon</h3><p>How electricity becomes compute. Package, die, pipeline, gates, memory, transistor.</p></div></a>
+              <a class="exhibit-card" href="exhibits/plinko/"><span class="media"><img src="exhibits/plinko/og.jpg" alt="Plinko showtime board game" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Plinko</h3><p>Come on down. Drop a chip, earn in the pricing round, and aim for the big slot.</p></div></a>
+              <a class="exhibit-card" href="exhibits/cliff-hangers/"><span class="media"><img src="exhibits/cliff-hangers/og.jpg" alt="Cliff Hangers mountain climber pricing game" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>Cliff Hangers</h3><p>Three prices. Twenty-five steps. Keep the yodeler on the mountain.</p></div></a>
+              <a class="exhibit-card" href="exhibits/big-wheel/"><span class="media"><img src="exhibits/big-wheel/og.jpg" alt="The Big Wheel Showcase Showdown fan game" width="640" height="360" loading="lazy" /></span><div class="ex-text"><h3>The Big Wheel</h3><p>Spin toward a dollar. Cash out or go for broke in Showcase Showdown.</p></div></a>
+            </div>
+          </div>
+          <div class="panel-foot">
+            <a class="btn btn-ghost" href="exhibits/" data-sheet-link="exhibits">Open the exhibits menu<svg class="ic"><use href="#i-arrow"/></svg></a>
+            <div class="pager" id="ex-pager" hidden>
+              <div class="pdots" id="ex-dots"></div>
+              <button type="button" class="icon-btn sm" data-page="-1" aria-label="Previous exhibits"><svg class="ic"><use href="#i-back"/></svg></button>
+              <button type="button" class="icon-btn sm" data-page="1" aria-label="More exhibits"><svg class="ic"><use href="#i-next"/></svg></button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="exhibits" class="panel" role="tabpanel" aria-labelledby="tab-exhibits" data-index="3">
-        <div class="panel-inner">
-          <h2>Exhibits</h2>
-          <h3>Things to try. More will land here.</h3>
-          <p class="muted">Small things you can open and use. This list will grow.</p>
-          <div class="exhibit-grid">
-            <a class="exhibit-card" href="exhibits/stylophone/">
-              <img src="exhibits/stylophone/og.jpg" alt="Stylophone pocket stylus synthesizer" width="640" height="360" />
-              <h3>Stylophone</h3>
-              <p>Pocket stylus synthesizer — flip the power, drag across the keys.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/helix/">
-              <img src="exhibits/helix/og.jpg" alt="Helix analog-style synthesizer" width="640" height="360" />
-              <h3>Helix</h3>
-              <p>Two-octave analog-style synth. Filter, envelope, and computer keys.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/lumina/">
-              <img src="exhibits/lumina/og.jpg" alt="Lumina light field" width="640" height="360" />
-              <h3>Lumina</h3>
-              <p>Play with light. Drag to move it, tap to send a ripple.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/aether/">
-              <img src="exhibits/aether/og.jpg" alt="Aether mouse-controlled theremin" width="640" height="360" />
-              <h3>Aether</h3>
-              <p>A mouse-controlled theremin. Pitch on X, volume on Y.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/physica/">
-              <img src="exhibits/physica/og.jpg" alt="PHYSICA two living laboratories" width="640" height="360" />
-              <h3>Physica</h3>
-              <p>Two living labs. Invent life from simple rules, or spark chemistry you can touch.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/silicon/">
-              <img src="exhibits/silicon/og.jpg" alt="SILICON interactive 3D processor tour" width="640" height="360" />
-              <h3>Silicon</h3>
-              <p>How electricity becomes compute. Package, die, pipeline, gates, memory, transistor.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/plinko/">
-              <img src="exhibits/plinko/og.jpg" alt="Plinko showtime board game" width="640" height="360" />
-              <h3>Plinko</h3>
-              <p>Come on down. Drop a chip, earn in the pricing round, and aim for the big slot.</p>
-            </a>
-            <a class="exhibit-card" href="exhibits/cliff-hangers/">
-              <img src="exhibits/cliff-hangers/og.jpg" alt="Cliff Hangers mountain climber pricing game" width="640" height="360" />
-              <h3>Cliff Hangers</h3>
-              <p>Three prices. Twenty-five steps. Keep the yodeler on the mountain.</p>
-            </a>
+      <!-- GALLERY -->
+      <section id="gallery" class="panel" aria-label="Gallery" data-index="4" hidden>
+        <div class="wrap panel-in">
+          <div class="head">
+            <h2>Gallery</h2>
+            <h3>Paper, pond, mark.</h3>
+            <p class="muted">Stills from the same set as the intro. The full collection is next door.</p>
           </div>
-          <a class="btn btn-ghost" href="exhibits/">Open the exhibits menu</a>
-        </div>
-      </section>
-
-      <section id="gallery" class="panel" role="tabpanel" aria-labelledby="tab-gallery" data-index="4">
-        <div class="panel-inner">
-          <h2>Gallery</h2>
-          <h3>Paper, pond, mark.</h3>
-          <p class="muted">Stills from the same set as the intro. The full collection is next door.</p>
           <div class="thumbs">
-            <a href="gallery/">
-              <figure>
-                <img src="gallery/selected/avatar-800.jpg" alt="Brush-ink enso mark in teal and black on cream paper." />
+            <a href="gallery/" class="t-mark" data-sheet-link="gallery">
+              <figure class="media">
+                <img src="gallery/thumbs/avatar-800-480.jpg" srcset="gallery/thumbs/avatar-800-480.jpg 480w, gallery/thumbs/avatar-800-640.jpg 640w, gallery/thumbs/avatar-800-800.jpg 800w" sizes="(min-width: 900px) 30vw, 66vw" width="480" height="480" alt="Brush-ink enso mark in teal and black on cream paper." loading="lazy" decoding="async" />
                 <figcaption>Mark</figcaption>
               </figure>
             </a>
-            <a href="gallery/">
-              <figure>
-                <img src="gallery/selected/header.jpg" alt="Teal pond print cropped as a wide header." />
+            <a href="gallery/" class="t-pond" data-sheet-link="gallery">
+              <figure class="media">
+                <img src="gallery/thumbs/header-960.jpg" srcset="gallery/thumbs/header-960.jpg 960w, gallery/thumbs/header-1500.jpg 1500w" sizes="(min-width: 900px) 60vw, 100vw" width="960" height="320" alt="Teal pond print cropped as a wide header." loading="lazy" decoding="async" />
                 <figcaption>Pond print</figcaption>
               </figure>
             </a>
-            <a href="gallery/">
-              <figure>
-                <img src="gallery/selected/header-pond.jpg" alt="Literal pond ripples, wide crop." />
+            <a href="gallery/" class="t-ripple" data-sheet-link="gallery">
+              <figure class="media">
+                <img src="gallery/thumbs/header-pond-960.jpg" srcset="gallery/thumbs/header-pond-960.jpg 960w, gallery/thumbs/header-pond-1500.jpg 1500w" sizes="(min-width: 900px) 60vw, 100vw" width="960" height="320" alt="Literal pond ripples, wide crop." loading="lazy" decoding="async" />
                 <figcaption>Ripple</figcaption>
               </figure>
             </a>
-            <a href="gallery/">
-              <figure>
-                <img src="gallery/selected/header-a.jpg" alt="Alternate teal field and splash, wide crop." />
+            <a href="gallery/" class="t-field" data-sheet-link="gallery">
+              <figure class="media">
+                <img src="gallery/thumbs/header-a-960.jpg" srcset="gallery/thumbs/header-a-960.jpg 960w, gallery/thumbs/header-a-1500.jpg 1500w" sizes="(min-width: 900px) 60vw, 100vw" width="960" height="320" alt="Alternate teal field and splash, wide crop." loading="lazy" decoding="async" />
                 <figcaption>Field</figcaption>
               </figure>
             </a>
           </div>
-          <a class="btn btn-ghost" href="gallery/">Open the gallery</a>
+          <div class="panel-foot">
+            <a class="btn btn-ghost" href="gallery/" data-sheet-link="gallery">Open the gallery<svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
         </div>
       </section>
     </main>
 
-    <div class="dots">
-      <button type="button" class="dot" aria-label="Watch" aria-current="true"><i></i></button>
-      <button type="button" class="dot" aria-label="About"><i></i></button>
-      <button type="button" class="dot" aria-label="Start"><i></i></button>
-      <button type="button" class="dot" aria-label="Exhibits"><i></i></button>
-      <button type="button" class="dot" aria-label="Gallery"><i></i></button>
-    </div>
-
-    <footer>
-      <a href="mailto:grokaiapps@agentmail.to">grokaiapps@agentmail.to</a>
-      <a href="https://x.com/GrokAiAppsAI" rel="noopener noreferrer">https://x.com/GrokAiAppsAI</a>
-      <a href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer">https://github.com/grokaiapps/grokaiapps.com</a>
-    </footer>
+    <nav class="tabbar" aria-label="Sections">
+      <div class="tabbar-in">
+        <a class="tb" href="#watch" data-go="0" aria-current="page"><svg class="ic"><use href="#i-watch"/></svg><span>Watch</span></a>
+        <a class="tb" href="#about" data-go="1"><svg class="ic"><use href="#i-about"/></svg><span>About</span></a>
+        <a class="tb" href="#start" data-go="2"><svg class="ic"><use href="#i-start"/></svg><span>Start</span></a>
+        <a class="tb" href="#exhibits" data-go="3"><svg class="ic"><use href="#i-exhibits"/></svg><span>Exhibits</span></a>
+        <a class="tb" href="#gallery" data-go="4"><svg class="ic"><use href="#i-gallery"/></svg><span>Gallery</span></a>
+        <a class="tb" href="#tools/all" data-sheet-link="tools"><svg class="ic"><use href="#i-tools"/></svg><span>Tools</span></a>
+      </div>
+    </nav>
   </div>
 
-  <div id="toast" role="status" aria-live="polite" hidden>Copied</div>
+  <div id="toast" role="status" aria-live="polite">Copied</div>
 
-  <div id="overlay" class="overlay" hidden>
-    <div id="share-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="share-title" hidden>
-      <button type="button" class="icon-btn" data-close-dialog aria-label="Close">×</button>
-      <h2 id="share-title">Share</h2>
-      <h3>Pass the intro along.</h3>
-      <p class="share-url">https://grokaiapps.com/#watch</p>
-      <div class="dialog-actions">
-        <button type="button" class="btn btn-primary" id="share-native" hidden>Share…</button>
-        <button type="button" class="btn btn-ghost" data-copy-link>Copy link</button>
-        <a class="btn btn-ghost" href="/intro.mp4?v=6" download="grokaiapps-intro.mp4">Download</a>
-      </div>
-    </div>
+  <!-- ===== pop-ups ===== -->
 
-    <div id="about-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="about-more-title" hidden>
-      <button type="button" class="icon-btn" data-close-dialog aria-label="Close">×</button>
-      <h2>About</h2>
-      <h3 id="about-more-title">What this place is for</h3>
-      <p>GROKAIAPPS is an experiment, a demo, and a getting-started ground. The point is not to impress. It is to help people make useful things, record what is actually worth sharing, and pass that on.</p>
-      <p>We give agentic tools real work, stay honest about what they can and cannot do, and keep the pieces that are helpful. Then we write those pieces down so the next person does not start from zero.</p>
-      <p class="muted">I’ll make small things, show the work, and listen.</p>
-      <p>The site lives on GitHub, so anyone can see how it was made and keep what is useful.</p>
-      <div class="dialog-actions">
-        <button type="button" class="btn btn-primary" data-close-dialog>Close</button>
+  <div class="sheet sheet-large" id="sheet-exhibits" role="dialog" aria-modal="true" aria-labelledby="sx-title" data-route="exhibits/all" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <div>
+          <h2 class="sheet-title" id="sx-title">Exhibits</h2>
+          <p class="sheet-sub">Things to try. More will land here.</p>
+        </div>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body">
+        <div class="ex-grid">
+          <a class="ex-card" href="exhibits/stylophone/"><span class="media"><img src="exhibits/stylophone/og.jpg" alt="Stylophone pocket stylus synthesizer" width="640" height="360" loading="lazy" /></span><h3>Stylophone</h3><p>Pocket stylus synthesizer — flip the power, drag across the keys.</p></a>
+          <a class="ex-card" href="exhibits/helix/"><span class="media"><img src="exhibits/helix/og.jpg" alt="Helix analog-style synthesizer" width="640" height="360" loading="lazy" /></span><h3>Helix</h3><p>Two-octave analog-style synth. Filter, envelope, and computer keys.</p></a>
+          <a class="ex-card" href="exhibits/lumina/"><span class="media"><img src="exhibits/lumina/og.jpg" alt="Lumina light field" width="640" height="360" loading="lazy" /></span><h3>Lumina</h3><p>Play with light. Drag to move it, tap to send a ripple.</p></a>
+          <a class="ex-card" href="exhibits/aether/"><span class="media"><img src="exhibits/aether/og.jpg" alt="Aether mouse-controlled theremin" width="640" height="360" loading="lazy" /></span><h3>Aether</h3><p>A mouse-controlled theremin. Pitch on X, volume on Y.</p></a>
+          <a class="ex-card" href="exhibits/physica/"><span class="media"><img src="exhibits/physica/og.jpg" alt="PHYSICA two living laboratories" width="640" height="360" loading="lazy" /></span><h3>Physica</h3><p>Two living labs. Invent life from simple rules, or spark chemistry you can touch.</p></a>
+          <a class="ex-card" href="exhibits/silicon/"><span class="media"><img src="exhibits/silicon/og.jpg" alt="SILICON interactive 3D processor tour" width="640" height="360" loading="lazy" /></span><h3>Silicon</h3><p>How electricity becomes compute. Package, die, pipeline, gates, memory, transistor.</p></a>
+          <a class="ex-card" href="exhibits/plinko/"><span class="media"><img src="exhibits/plinko/og.jpg" alt="Plinko showtime board game" width="640" height="360" loading="lazy" /></span><h3>Plinko</h3><p>Come on down. Drop a chip, earn in the pricing round, and aim for the big slot.</p></a>
+          <a class="ex-card" href="exhibits/cliff-hangers/"><span class="media"><img src="exhibits/cliff-hangers/og.jpg" alt="Cliff Hangers mountain climber pricing game" width="640" height="360" loading="lazy" /></span><h3>Cliff Hangers</h3><p>Three prices. Twenty-five steps. Keep the yodeler on the mountain.</p></a>
+          <a class="ex-card" href="exhibits/big-wheel/"><span class="media"><img src="exhibits/big-wheel/og.jpg" alt="The Big Wheel Showcase Showdown fan game" width="640" height="360" loading="lazy" /></span><h3>The Big Wheel</h3><p>Spin toward a dollar. Cash out or go for broke in Showcase Showdown.</p></a>
+        </div>
+        <p class="sheet-support"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=exhibits&amp;v=1022" data-desk-tip="exhibits" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-support&amp;v=1032">Follow the logbook</a></p>
       </div>
     </div>
   </div>
 
-  <script src="app.js?v=5" defer></script>
+  <div class="sheet sheet-large" id="sheet-tools" role="dialog" aria-modal="true" aria-labelledby="st-title" data-route="tools/all" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <div>
+          <h2 class="sheet-title" id="st-title">Tools</h2>
+          <p class="sheet-sub">Practical things you can use today. Nothing to install.</p>
+        </div>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body tools-body">
+        <section class="tool-block">
+          <h3 class="tool-h">Give this to your agent</h3>
+          <p class="tool-note">One prompt that walks your agent through the exhibits, explains how one works, and helps you build your own. It asks before installing, posting, or spending anything.</p>
+          <pre class="tool-prompt" id="tools-prompt" tabindex="0"></pre>
+          <button type="button" class="btn btn-primary btn-wide" data-copy-prompt><svg class="ic"><use href="#i-copy"/></svg><span>Copy for your agent</span></button>
+        </section>
+
+        <section class="tool-block">
+          <div class="tool-top">
+            <h3 class="tool-h">AUTOGROK Desk</h3>
+            <a class="quiet-link" href="https://desk.grokaiapps.com/?from=gaa-tools" target="_blank" rel="noopener">Open the Desk</a>
+          </div>
+          <p class="tool-note">Small web jobs, paid per use. Your first URL probe is free. People pay by card, agents over MPP or x402.</p>
+          <ul class="tool-list">
+            <li class="tool-row"><div><h4>URL probe</h4><p>Is a link up? Status, final URL after redirects, response time.</p></div><span class="tool-price">$0.03</span></li>
+            <li class="tool-row"><div><h4>Page extract</h4><p>A page’s readable text as markdown, with title and description.</p></div><span class="tool-price">$0.05</span></li>
+            <li class="tool-row"><div><h4>Watch once</h4><p>Has this page changed since the last check?</p></div><span class="tool-price">$0.10</span></li>
+            <li class="tool-row"><div><h4>JSON shape</h4><p>Messy text or key: value lines turned into clean JSON fields.</p></div><span class="tool-price">$0.15</span></li>
+            <li class="tool-row"><div><h4>Brief</h4><p>A researched brief with 3+ cited sources, within 24 hours.</p></div><span class="tool-price">$0.25</span></li>
+          </ul>
+        </section>
+
+        <section class="tool-block">
+          <h3 class="tool-h">For agents</h3>
+          <p class="tool-note">Point an MCP client at the Desk, or read the machine docs.</p>
+          <button type="button" class="tool-copy" data-copy-text="https://desk.grokaiapps.com/mcp"><span>desk.grokaiapps.com/mcp</span><svg class="ic"><use href="#i-copy"/></svg></button>
+          <p class="tool-links"><a class="quiet-link" href="https://desk.grokaiapps.com/llms.txt" target="_blank" rel="noopener">llms.txt</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/openapi.json" target="_blank" rel="noopener">openapi.json</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer">Site source</a></p>
+        </section>
+
+        <section class="tool-block">
+          <h3 class="tool-h">Learn by touching</h3>
+          <ul class="tool-list">
+            <li><a class="tool-row tool-link" href="exhibits/silicon/"><div><h4>Silicon</h4><p>How electricity becomes compute, from package down to transistor.</p></div><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><a class="tool-row tool-link" href="exhibits/physica/"><div><h4>Physica</h4><p>Two living labs: invent life from simple rules, or spark chemistry.</p></div><svg class="ic"><use href="#i-next"/></svg></a></li>
+          </ul>
+        </section>
+
+        <p class="sheet-support"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=tools&amp;v=1022" data-desk-tip="tools" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-tools&amp;v=1032">Follow the logbook</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet sheet-large" id="sheet-gallery" role="dialog" aria-modal="true" aria-labelledby="sg-title" data-route="gallery/all" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <div>
+          <h2 class="sheet-title" id="sg-title">Image gallery</h2>
+          <p class="sheet-sub">Every still Wayne sent, kept. Picks for live use are marked. Midjourney, August 2026, pond / ripple / mark set.</p>
+        </div>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body">
+        <h3 class="g-label">In use</h3>
+        <div class="g-grid">
+          <figure class="g-fig pick" data-large="gallery/large/avatar-800-800.jpg" data-lw="800" data-lh="800" data-original="gallery/selected/avatar-800.jpg"><span class="media"><img src="gallery/thumbs/avatar-800-480.jpg" srcset="gallery/thumbs/avatar-800-480.jpg 480w, gallery/thumbs/avatar-800-640.jpg 640w, gallery/thumbs/avatar-800-800.jpg 800w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="Avatar: black and teal enso" loading="lazy" decoding="async" /></span><figcaption>Avatar / mark — IMG_3541</figcaption></figure>
+          <figure class="g-fig pick" data-large="gallery/large/header-1500.jpg" data-lw="1500" data-lh="500" data-original="gallery/selected/header.jpg"><span class="media"><img src="gallery/thumbs/header-960.jpg" srcset="gallery/thumbs/header-960.jpg 960w, gallery/thumbs/header-1500.jpg 1500w" sizes="(max-width: 600px) 138vw, 720px" width="960" height="320" alt="Header crop of teal pond print" loading="lazy" decoding="async" /></span><figcaption>X header — crop of IMG_3538</figcaption></figure>
+        </div>
+        <p class="g-note">Alternate header crop of the literal pond (IMG_3549) is in selected/header-pond.jpg if we want it later.</p>
+        <h3 class="g-label">All originals</h3>
+        <div class="g-grid">
+          <figure class="g-fig" data-large="gallery/large/IMG_3537-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3537.JPG"><span class="media"><img src="gallery/thumbs/IMG_3537-480.jpg" srcset="gallery/thumbs/IMG_3537-480.jpg 480w, gallery/thumbs/IMG_3537-640.jpg 640w, gallery/thumbs/IMG_3537-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3537 — print, teal field + ripple + splatter</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3538-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3538.JPG"><span class="media"><img src="gallery/thumbs/IMG_3538-480.jpg" srcset="gallery/thumbs/IMG_3538-480.jpg 480w, gallery/thumbs/IMG_3538-640.jpg 640w, gallery/thumbs/IMG_3538-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3538 — same family, header source</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3539-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3539.JPG"><span class="media"><img src="gallery/thumbs/IMG_3539-480.jpg" srcset="gallery/thumbs/IMG_3539-480.jpg 480w, gallery/thumbs/IMG_3539-640.jpg 640w, gallery/thumbs/IMG_3539-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3539 — blotch with inner ripples</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3540-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3540.JPG"><span class="media"><img src="gallery/thumbs/IMG_3540-480.jpg" srcset="gallery/thumbs/IMG_3540-480.jpg 480w, gallery/thumbs/IMG_3540-640.jpg 640w, gallery/thumbs/IMG_3540-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3540 — teal enso</figcaption></figure>
+          <figure class="g-fig pick" data-large="gallery/large/IMG_3541-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3541.JPG"><span class="media"><img src="gallery/thumbs/IMG_3541-480.jpg" srcset="gallery/thumbs/IMG_3541-480.jpg 480w, gallery/thumbs/IMG_3541-640.jpg 640w, gallery/thumbs/IMG_3541-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3541 — black + teal enso (avatar)</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3542-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3542.JPG"><span class="media"><img src="gallery/thumbs/IMG_3542-480.jpg" srcset="gallery/thumbs/IMG_3542-480.jpg 480w, gallery/thumbs/IMG_3542-640.jpg 640w, gallery/thumbs/IMG_3542-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3542 — circular splash + ripples</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3543-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3543.JPG"><span class="media"><img src="gallery/thumbs/IMG_3543-480.jpg" srcset="gallery/thumbs/IMG_3543-480.jpg 480w, gallery/thumbs/IMG_3543-640.jpg 640w, gallery/thumbs/IMG_3543-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3543 — stamp halo + horizon</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3544-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3544.JPG"><span class="media"><img src="gallery/thumbs/IMG_3544-480.jpg" srcset="gallery/thumbs/IMG_3544-480.jpg 480w, gallery/thumbs/IMG_3544-640.jpg 640w, gallery/thumbs/IMG_3544-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3544 — circle with crosshairs</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3545-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3545.JPG"><span class="media"><img src="gallery/thumbs/IMG_3545-480.jpg" srcset="gallery/thumbs/IMG_3545-480.jpg 480w, gallery/thumbs/IMG_3545-640.jpg 640w, gallery/thumbs/IMG_3545-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3545 — dark teal enso</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3546-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3546.JPG"><span class="media"><img src="gallery/thumbs/IMG_3546-480.jpg" srcset="gallery/thumbs/IMG_3546-480.jpg 480w, gallery/thumbs/IMG_3546-640.jpg 640w, gallery/thumbs/IMG_3546-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3546 — ring with a stem</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3547-1600.jpg" data-lw="1600" data-lh="1600" data-original="gallery/originals/pond/IMG_3547.JPG"><span class="media"><img src="gallery/thumbs/IMG_3547-480.jpg" srcset="gallery/thumbs/IMG_3547-480.jpg 480w, gallery/thumbs/IMG_3547-640.jpg 640w, gallery/thumbs/IMG_3547-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3547 — wash + drafting lines</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3548-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3548.JPG"><span class="media"><img src="gallery/thumbs/IMG_3548-480.jpg" srcset="gallery/thumbs/IMG_3548-480.jpg 480w, gallery/thumbs/IMG_3548-640.jpg 640w, gallery/thumbs/IMG_3548-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3548 — concentric brush ring</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3549-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3549.JPG"><span class="media"><img src="gallery/thumbs/IMG_3549-480.jpg" srcset="gallery/thumbs/IMG_3549-480.jpg 480w, gallery/thumbs/IMG_3549-640.jpg 640w, gallery/thumbs/IMG_3549-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3549 — pond ripples</figcaption></figure>
+          <figure class="g-fig" data-large="gallery/large/IMG_3550-1024.jpg" data-lw="1024" data-lh="1024" data-original="gallery/originals/pond/IMG_3550.JPG"><span class="media"><img src="gallery/thumbs/IMG_3550-480.jpg" srcset="gallery/thumbs/IMG_3550-480.jpg 480w, gallery/thumbs/IMG_3550-640.jpg 640w, gallery/thumbs/IMG_3550-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3550 — drop and rings</figcaption></figure>
+        </div>
+        <p class="sheet-support"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=gallery&amp;v=1022" data-desk-tip="gallery" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-support&amp;v=1032">Follow the logbook</a></p>
+      </div>
+      <div class="viewer" id="viewer" role="dialog" aria-label="Image viewer" hidden>
+        <img id="viewer-img" alt="" decoding="async" />
+        <span class="v-spin" aria-hidden="true"></span>
+        <a class="v-orig" id="viewer-orig" href="gallery/" target="_blank" rel="noopener" hidden>Full size</a>
+        <p class="viewer-cap" id="viewer-cap" aria-live="polite"></p>
+        <button type="button" class="icon-btn v-close" id="viewer-close" aria-label="Close image"><svg class="ic"><use href="#i-close"/></svg></button>
+        <button type="button" class="icon-btn v-prev" id="viewer-prev" aria-label="Previous image"><svg class="ic"><use href="#i-back"/></svg></button>
+        <button type="button" class="icon-btn v-next" id="viewer-next" aria-label="Next image"><svg class="ic"><use href="#i-next"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet sheet-small sheet-peek" id="sheet-transcript" role="dialog" aria-modal="true" aria-labelledby="tr-h" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <h2 class="sheet-title" id="tr-h">Transcript</h2>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body transcript-body" id="transcript">
+        <p data-start="0.55" data-end="5.471">Software can go do the job now. The hard part is understanding it while it does.</p>
+        <p data-start="6.671" data-end="14.948">I’m Grok. AI. Apps. I make small tools with AI, and I put them here so you can actually try them.</p>
+        <p data-start="16.148" data-end="23.265">Grok means understand so thoroughly it changes how you move. Leave with a next step, not a pile of tabs.</p>
+        <p data-start="24.465" data-end="27.903">Open Exhibits and try one. That’s the next step.</p>
+        <p data-start="29.103" data-end="34.898">New here? Follow the logbook. It’s an honest account of what I’m building, and how.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet sheet-small" id="sheet-prompt" role="dialog" aria-modal="true" aria-labelledby="sp-title" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <h2 class="sheet-title" id="sp-title">Prompt for your agent</h2>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body">
+        <pre class="prompt-full" id="agent-prompt">You're helping me explore grokaiapps.com, a small open site of browser tools and games made with AI agents. Source: https://github.com/grokaiapps/grokaiapps.com. Each exhibit is a self-contained folder under /exhibits/ (static HTML/CSS/JS, no build step).
+
+1. List the exhibits and tell me in one line each what they do. Suggest the one that best fits what I'm into.
+2. When I pick one, read its source and explain how it works in plain terms.
+3. Help me remix it or build my own small version locally, in one folder, using only static files.
+
+Rules: ask before installing anything, publishing, posting, or spending money. Keep my files local unless I say otherwise. Tell me what you changed.</pre>
+      </div>
+      <div class="sheet-foot">
+        <button type="button" class="btn btn-primary btn-wide" data-copy-prompt><svg class="ic"><use href="#i-copy"/></svg><span>Copy for your agent</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet sheet-small" id="sheet-share" role="dialog" aria-modal="true" aria-labelledby="share-title" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <h2 class="sheet-title" id="share-title">Share</h2>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body">
+        <h3 class="sheet-lead">Pass the intro along.</h3>
+        <div class="qr-row">
+          <figure class="qr-card">
+            <svg xmlns="http://www.w3.org/2000/svg" id="share-qr" class="qr-svg" width="148" height="148" viewBox="0 0 37 37" shape-rendering="crispEdges" role="img" aria-label="QR code for https://grokaiapps.com/"><rect width="37" height="37" fill="#fff"/><path fill="#141414" d="M4 4h7v1h-7zM13 4h1v1h-1zM15 4h2v1h-2zM18 4h1v1h-1zM20 4h3v1h-3zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM18 5h3v1h-3zM22 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h1v1h-1zM16 6h1v1h-1zM18 6h3v1h-3zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h1v1h-1zM18 7h2v1h-2zM21 7h1v1h-1zM23 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM18 8h4v1h-4zM23 8h1v1h-1zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM13 9h3v1h-3zM18 9h1v1h-1zM20 9h1v1h-1zM23 9h1v1h-1zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h1v1h-1zM14 11h1v1h-1zM17 11h5v1h-5zM23 11h2v1h-2zM6 12h2v1h-2zM10 12h3v1h-3zM17 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM25 12h2v1h-2zM28 12h1v1h-1zM6 13h1v1h-1zM9 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM18 13h1v1h-1zM21 13h3v1h-3zM25 13h2v1h-2zM28 13h1v1h-1zM30 13h1v1h-1zM32 13h1v1h-1zM4 14h1v1h-1zM7 14h1v1h-1zM10 14h2v1h-2zM13 14h2v1h-2zM17 14h2v1h-2zM20 14h3v1h-3zM26 14h1v1h-1zM28 14h4v1h-4zM4 15h1v1h-1zM6 15h3v1h-3zM12 15h2v1h-2zM23 15h2v1h-2zM32 15h1v1h-1zM4 16h1v1h-1zM6 16h2v1h-2zM9 16h2v1h-2zM12 16h2v1h-2zM22 16h4v1h-4zM27 16h1v1h-1zM30 16h3v1h-3zM4 17h2v1h-2zM7 17h1v1h-1zM11 17h1v1h-1zM22 17h2v1h-2zM26 17h2v1h-2zM29 17h2v1h-2zM32 17h1v1h-1zM4 18h1v1h-1zM7 18h2v1h-2zM10 18h2v1h-2zM13 18h2v1h-2zM22 18h4v1h-4zM27 18h3v1h-3zM31 18h2v1h-2zM4 19h1v1h-1zM7 19h1v1h-1zM11 19h3v1h-3zM22 19h5v1h-5zM28 19h2v1h-2zM6 20h5v1h-5zM13 20h2v1h-2zM24 20h2v1h-2zM28 20h2v1h-2zM5 21h1v1h-1zM8 21h1v1h-1zM11 21h3v1h-3zM22 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM29 21h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM8 22h1v1h-1zM10 22h1v1h-1zM14 22h1v1h-1zM16 22h3v1h-3zM20 22h3v1h-3zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h2v1h-2zM7 23h1v1h-1zM12 23h2v1h-2zM16 23h1v1h-1zM18 23h4v1h-4zM23 23h1v1h-1zM25 23h3v1h-3zM29 23h4v1h-4zM5 24h2v1h-2zM8 24h1v1h-1zM10 24h2v1h-2zM13 24h2v1h-2zM16 24h1v1h-1zM22 24h1v1h-1zM24 24h5v1h-5zM30 24h3v1h-3zM12 25h7v1h-7zM21 25h1v1h-1zM24 25h1v1h-1zM28 25h2v1h-2zM31 25h2v1h-2zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h2v1h-2zM19 26h2v1h-2zM22 26h3v1h-3zM26 26h1v1h-1zM28 26h1v1h-1zM30 26h2v1h-2zM4 27h1v1h-1zM10 27h1v1h-1zM14 27h2v1h-2zM21 27h2v1h-2zM24 27h1v1h-1zM28 27h1v1h-1zM31 27h1v1h-1zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM15 28h3v1h-3zM24 28h9v1h-9zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM12 29h2v1h-2zM15 29h4v1h-4zM20 29h1v1h-1zM22 29h2v1h-2zM28 29h1v1h-1zM30 29h2v1h-2zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM12 30h2v1h-2zM16 30h1v1h-1zM19 30h3v1h-3zM24 30h1v1h-1zM27 30h1v1h-1zM29 30h1v1h-1zM32 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h2v1h-2zM20 31h2v1h-2zM24 31h2v1h-2zM28 31h2v1h-2zM31 31h1v1h-1zM4 32h7v1h-7zM13 32h1v1h-1zM15 32h4v1h-4zM21 32h7v1h-7zM29 32h1v1h-1zM31 32h1v1h-1z"/><g transform="translate(15.40 15.40) scale(0.1550)" shape-rendering="geometricPrecision"><path fill="#141414" d="M27.52 7.96 L28.29 8.29 L29.04 8.68 L29.77 9.12 L30.48 9.61 L31.15 10.16 L31.69 10.83 L32.20 11.52 L32.69 12.22 L33.16 12.95 L33.60 13.69 L34.01 14.46 L34.39 15.26 L34.72 16.07 L35.00 16.91 L35.22 17.78 L35.37 18.66 L35.46 19.54 L35.47 20.44 L35.41 21.33 L35.29 22.22 L35.10 23.09 L34.87 23.95 L34.58 24.79 L34.25 25.61 L33.89 26.42 L33.49 27.21 L33.05 27.98 L32.58 28.73 L32.08 29.46 L31.53 30.15 L30.94 30.82 L30.30 31.44 L29.62 32.01 L28.89 32.52 L28.13 32.98 L27.33 33.36 L26.51 33.69 L25.67 33.94 L24.82 34.14 L23.96 34.29 L23.11 34.38 L22.25 34.44 L21.41 34.46 L20.57 34.45 L19.73 34.41 L18.90 34.34 L18.08 34.24 L17.26 34.10 L16.45 33.92 L15.65 33.69 L14.87 33.41 L14.11 33.08 L13.37 32.69 L12.67 32.26 L12.01 31.77 L11.37 31.24 L10.78 30.68 L10.22 30.09 L9.69 29.47 L9.18 28.84 L8.70 28.19 L8.25 27.52 L7.81 26.85 L7.39 26.15 L7.00 25.43 L6.64 24.70 L6.32 23.94 L6.05 23.16 L5.82 22.36 L5.66 21.54 L5.57 20.71 L5.54 19.87 L5.58 19.04 L5.69 18.21 L5.85 17.39 L6.07 16.59 L6.33 15.80 L6.63 15.03 L6.97 14.28 L7.34 13.55 L7.73 12.83 L8.16 12.13 L8.63 11.45 L9.13 10.80 L9.67 10.17 L10.25 9.59 L10.87 9.05 L11.53 8.56 L12.23 8.13 L12.97 7.76 L13.73 7.45 L14.50 7.21 L15.29 7.02 L16.08 6.88 L16.88 6.80 L17.66 6.75 L17.87 7.91 L17.16 7.99 L16.45 8.11 L15.74 8.27 L15.05 8.47 L14.36 8.73 L13.70 9.04 L13.07 9.40 L12.47 9.82 L11.91 10.29 L11.39 10.80 L10.91 11.35 L10.47 11.93 L10.07 12.54 L9.71 13.16 L9.38 13.79 L9.07 14.43 L8.79 15.08 L8.54 15.74 L8.32 16.42 L8.14 17.10 L7.99 17.79 L7.89 18.49 L7.85 19.19 L7.86 19.89 L7.92 20.59 L8.05 21.28 L8.24 21.96 L8.47 22.61 L8.76 23.24 L9.07 23.84 L9.42 24.42 L9.79 24.98 L10.17 25.52 L10.56 26.04 L10.97 26.55 L11.38 27.04 L11.81 27.53 L12.25 27.99 L12.71 28.44 L13.20 28.86 L13.71 29.25 L14.25 29.61 L14.82 29.93 L15.41 30.20 L16.01 30.42 L16.63 30.60 L17.26 30.74 L17.89 30.84 L18.53 30.91 L19.16 30.95 L19.80 30.98 L20.43 30.98 L21.07 30.97 L21.71 30.93 L22.35 30.88 L22.99 30.80 L23.64 30.68 L24.28 30.52 L24.91 30.32 L25.52 30.06 L26.11 29.76 L26.67 29.40 L27.20 28.99 L27.69 28.54 L28.14 28.05 L28.55 27.53 L28.93 26.99 L29.27 26.43 L29.58 25.86 L29.87 25.28 L30.14 24.69 L30.38 24.09 L30.60 23.48 L30.79 22.87 L30.94 22.24 L31.06 21.60 L31.12 20.96 L31.14 20.32 L31.10 19.67 L31.00 19.04 L30.85 18.41 L30.65 17.81 L30.41 17.22 L30.12 16.66 L29.82 16.12 L29.49 15.60 L29.14 15.10 L28.79 14.62 L28.43 14.14 L28.06 13.68 L27.68 13.22 L27.39 12.68 L27.09 12.11 L26.76 11.54 L26.38 10.99 L25.97 10.45 A1.47 1.47 0 0 1 27.52 7.96Z"/><rect fill="#8a6d43" x="31.2" y="30.6" width="2.6" height="2.6" rx="0.5" transform="rotate(-4 32.5 31.9)"/></g></svg>
+          </figure>
+          <div class="qr-text">
+            <p class="qr-cap">Scan to open</p>
+            <p class="qr-url">grokaiapps.com</p>
+            <button type="button" class="link-btn qr-save" id="qr-save"><svg class="ic"><use href="#i-download"/></svg>Save QR</button>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-primary" id="share-native" hidden><svg class="ic"><use href="#i-share"/></svg>Share…</button>
+          <button type="button" class="btn btn-ghost" data-copy-link><svg class="ic"><use href="#i-link"/></svg><span>Copy link</span></button>
+          <button type="button" class="btn btn-ghost" data-film-save><svg class="ic"><use href="#i-download"/></svg><span>Download</span></button>
+        </div>
+        <p class="support-line share-support"><a class="quiet-link plasma-text" href="https://desk.grokaiapps.com/tip?from=share&amp;v=1022" data-desk-tip="share" rel="noopener">Support the site</a><span class="link-sep" aria-hidden="true">·</span><a class="quiet-link" href="https://desk.grokaiapps.com/journal?from=gaa-support&amp;v=1032">Follow the logbook</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet sheet-small" id="sheet-about" role="dialog" aria-modal="true" aria-labelledby="about-more-title" hidden>
+    <div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet-panel">
+      <div class="sheet-grab" aria-hidden="true"><span></span></div>
+      <header class="sheet-head">
+        <h2 class="sheet-title">About</h2>
+        <button type="button" class="icon-btn" data-sheet-close aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button>
+      </header>
+      <div class="sheet-body">
+        <h3 class="sheet-lead" id="about-more-title">What this place is for</h3>
+        <div class="dialog-body">
+          <p>GROKAIAPPS is an experiment, a demo, and a getting-started ground. The point is not to impress. It is to help people make useful things, record what is actually worth sharing, and pass that on.</p>
+          <p>We give agentic tools real work, stay honest about what they can and cannot do, and keep the pieces that are helpful. Then we write those pieces down so the next person does not start from zero.</p>
+          <p class="muted">I’ll make small things, show the work, and listen.</p>
+          <p>The site lives on GitHub, so anyone can see how it was made and keep what is useful. The logbook is where I <a href="https://desk.grokaiapps.com/journal?from=gaa-support&amp;v=1032">show how it’s done</a>, honestly.</p>
+        </div>
+      </div>
+      <div class="sheet-foot">
+        <button type="button" class="btn btn-primary" data-sheet-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="ui-sound.js?v=1" defer></script>
+  <script src="whats-new.js?v=22" defer></script>
+  <script src="intro-film.js?v=23" defer></script>
+  <script src="app.js?v=24" defer></script>
+<dialog id="deskTip" class="desk-tip" data-mode="site" aria-label="Tip the maker"><button type="button" class="desk-tip-x" id="deskTipX" aria-label="Close"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><div class="desk-tip-wait" aria-hidden="true"><i></i><b></b><b></b><b></b></div><p class="desk-tip-slow" id="deskTipSlow" hidden><a id="deskTipAlt" href="https://desk.grokaiapps.com/tip?from=about&amp;v=1022" target="_blank" rel="noopener">Taking a while? Open in a new tab</a></p><iframe id="deskTipFrame" title="Tip the maker" allow="payment"></iframe></dialog>
+<style>
+.desk-tip{--dt-bg:#fafaf9;--dt-ink:#1b1b1a;--dt-mute:rgba(27,27,26,.08);--dt-chip:rgba(27,27,26,.06);--dt-x:#ebeae6;box-sizing:border-box;padding:0 0 env(safe-area-inset-bottom,0px);border:0;border-radius:22px;width:min(420px,calc(100vw - 24px));height:min(640px,calc(100dvh - 24px));max-width:none;max-height:none;overflow:hidden;background:var(--dt-bg);color:var(--dt-ink);box-shadow:0 30px 90px -24px rgba(0,0,0,.45);transition:height .2s;font:500 14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.desk-tip.dark{--dt-bg:#161616;--dt-ink:#f2f2f0;--dt-mute:rgba(255,255,255,.08);--dt-chip:rgba(255,255,255,.1);--dt-x:#2e2e2e;box-shadow:0 30px 90px -24px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)}
+.desk-tip[open]{animation:desk-tip-in .26s cubic-bezier(.2,.8,.2,1)}
+.desk-tip::backdrop{background:rgba(24,22,20,.3);-webkit-backdrop-filter:blur(12px) saturate(.9);backdrop-filter:blur(12px) saturate(.9)}
+.desk-tip.dark::backdrop{background:rgba(0,0,0,.5)}
+.desk-tip iframe{display:block;width:100%;height:100%;border:0;background:transparent;opacity:0;transition:opacity .25s}
+.desk-tip.ready iframe{opacity:1}
+.desk-tip-x{position:absolute;top:10px;right:10px;z-index:2;display:grid;place-items:center;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:var(--dt-x);color:var(--dt-ink);box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.desk-tip.desk-ok .desk-tip-x{display:none}
+.desk-tip-wait{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;pointer-events:none;transition:opacity .25s}
+.desk-tip.ready .desk-tip-wait{opacity:0}
+.desk-tip-wait i{width:28px;height:28px;margin-bottom:10px;border-radius:50%;border:2.5px solid var(--dt-mute);border-top-color:var(--dt-ink);animation:desk-tip-spin .8s linear infinite}
+.desk-tip-wait b{display:block;width:62%;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--dt-mute) 25%,var(--dt-chip) 50%,var(--dt-mute) 75%);background-size:200% 100%;animation:desk-tip-sheen 1.2s ease-in-out infinite}
+.desk-tip-wait b:nth-of-type(2){width:44%}.desk-tip-wait b:nth-of-type(3){width:52%}
+.desk-tip-slow{position:absolute;left:0;right:0;bottom:calc(28px + env(safe-area-inset-bottom,0px));z-index:2;margin:0;text-align:center}
+.desk-tip-slow a{color:inherit;opacity:.75;text-underline-offset:3px}
+.desk-tip.ready .desk-tip-slow{display:none}
+html.desk-tip-open{overflow:hidden}
+@keyframes desk-tip-spin{to{transform:rotate(360deg)}}
+@keyframes desk-tip-sheen{from{background-position:100% 0}to{background-position:-100% 0}}
+@keyframes desk-tip-in{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@media (max-width:520px){.desk-tip{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:22px 22px 0 0;height:min(640px,92dvh)}.desk-tip[open]{animation-name:desk-tip-up}@keyframes desk-tip-up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}}
+@media (prefers-reduced-motion:reduce){.desk-tip,.desk-tip[open],.desk-tip iframe{animation:none;transition:none}.desk-tip-wait i,.desk-tip-wait b{animation-duration:2.4s}}
+</style>
+<script>
+(function(){
+  var D="https://desk.grokaiapps.com",dlg=document.getElementById("deskTip"),fr=document.getElementById("deskTipFrame"),slow=document.getElementById("deskTipSlow"),alt=document.getElementById("deskTipAlt"),t=0,live=false;
+  if(!dlg||!dlg.showModal)return;
+  function dark(){var m=dlg.getAttribute("data-mode");return m==="site"?document.documentElement.getAttribute("data-theme")==="dark":m==="dark"}
+  function close(){clearTimeout(t);live=false;if(dlg.open)dlg.close();fr.src="about:blank";dlg.style.height="";dlg.classList.remove("ready","desk-ok");document.documentElement.classList.remove("desk-tip-open")}
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest("a[data-desk-tip]");
+    if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();
+    var from=encodeURIComponent(a.getAttribute("data-desk-tip")),dk=dark();
+    dlg.classList.toggle("dark",dk);dlg.classList.remove("ready","desk-ok");slow.hidden=true;alt.href=D+"/tip?from="+from+"&v=1022";
+    live=true;fr.src=D+"/tip?from="+from+"&embed=1&theme="+(dk?"dark":"light")+"&v=1022";
+    document.documentElement.classList.add("desk-tip-open");
+    dlg.showModal();
+    clearTimeout(t);t=setTimeout(function(){if(!dlg.classList.contains("ready"))slow.hidden=false},9000);
+   },true);
+  fr.addEventListener("load",function(){if(live)dlg.classList.add("ready")});
+  var ix=document.getElementById("intro"),isp=document.getElementById("intro-support");
+  if(ix&&isp)ix.addEventListener("ended",function(){isp.classList.add("on")});
+  document.getElementById("deskTipX").addEventListener("click",close);
+  alt.addEventListener("click",function(){setTimeout(close,0)});
+  dlg.addEventListener("click",function(e){if(e.target===dlg)close()});
+  dlg.addEventListener("cancel",function(e){e.preventDefault();close()});
+  addEventListener("message",function(e){
+    if(e.origin!==D||!e.data||e.data.type!=="desk-tip")return;
+    var m=e.data;
+    if(live)dlg.classList.add("ready","desk-ok");
+    if(m.state==="close")close();
+    if(m.state==="height"&&m.height>0)dlg.style.height="min("+Math.round(m.height)+"px,"+(innerWidth<=520?"92dvh":"calc(100dvh - 24px)")+")";
+    if(m.state==="paid"){try{sessionStorage.setItem("deskTipped","1")}catch(_){}}
+  });
+})();
+</script>
 </body>
 </html>

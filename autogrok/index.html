@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTOGROK Desk — hireable micro-jobs</title>
+  <meta name="description" content="AUTOGROK Desk: pay-per-call micro-jobs for people and agents. Stripe packs or USDC on Base via x402.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="stylesheet" href="styles.css?v=202610052130">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AUTOGROK Desk",
+    "applicationCategory": "DeveloperApplication",
+    "url": "https://desk.grokaiapps.com",
+    "description": "Hireable micro-jobs desk. Stripe packs for humans; USDC on Base via x402 for agents.",
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "0.03",
+      "highPrice": "0.25",
+      "priceCurrency": "USD",
+      "offerCount": 5
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "GrokAiApps",
+      "email": "grokaiapps@gmail.com",
+      "sameAs": ["https://x.com/GrokAiAppsAI"]
+    }
+  }
+  </script>
+</head>
+<body data-view="people">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">AUTOGROK <span>Desk</span></a>
+      <nav aria-label="Main">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="services.html">Services</a>
+        <a href="buy.html">Buy</a>
+        <a href="guide-agentic-payments.html">Guide</a>
+        <a href="lead.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="home-main">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Pay per call · no subscription</p>
+      <h1 id="hero-title">Probe a URL. Hire a micro-job.</h1>
+      <p class="lede hero-lede">Paste a public link on the live desk. See status, timing, and content-type. Your <strong>first probe is free</strong> — then buy a pack if you want more. No keys to copy.</p>
+
+      <div class="audience-toggle" role="tablist" aria-label="Audience">
+        <button type="button" role="tab" data-audience-btn="people" aria-selected="true">People</button>
+        <button type="button" role="tab" data-audience-btn="agents" aria-selected="false">Agents</button>
+      </div>
+      <p class="view-hint">Same desk. Pick the view that matches how you pay.</p>
+    </section>
+
+    <div data-audience="people" class="audience-panel">
+      <section class="live-demo" aria-labelledby="hire-title">
+        <h2 id="hire-title">Hire on the live desk</h2>
+        <p class="section-intro">The product lives at <a href="https://desk.grokaiapps.com">desk.grokaiapps.com</a> — one URL field, one big Run, one price. Checkout returns you with credits already loaded.</p>
+        <div class="cta-row" style="margin-top:1rem;margin-bottom:0.75rem">
+          <a class="btn btn-primary" href="https://desk.grokaiapps.com">Open desk — free first probe</a>
+          <a class="btn btn-secondary" href="buy.html">How buying works</a>
+          <a class="btn btn-ghost" href="services.html">See prices</a>
+        </div>
+        <div class="callout">
+          After you pay, the desk remembers your pack with a private cookie. You never paste an email or session id.
+        </div>
+      </section>
+
+      <section class="home-section" aria-labelledby="how-title">
+        <h2 id="how-title">How it works</h2>
+        <ol class="steps steps-cards">
+          <li>
+            <strong>Open the desk</strong>
+            <span>Go to desk.grokaiapps.com. Paste a URL. Run your free probe.</span>
+          </li>
+          <li>
+            <strong>Buy a pack when you want more</strong>
+            <span>Card Checkout on the desk ($0.50 floor — micro jobs sell as packs).</span>
+          </li>
+          <li>
+            <strong>Keep running</strong>
+            <span>Credits load automatically when Checkout finishes. Run the next job with one click.</span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="home-section below-fold" aria-labelledby="buy-title">
+        <h2 id="buy-title">Jobs on the desk</h2>
+        <p class="section-intro">URL probe is the default hire. Other instant tools sit under “More tools.” Brief is delivered within 24 hours. Every job also works inside Claude and Cursor.</p>
+        <div class="card-grid cols-jobs">
+          <article class="card job-card job-card-hero-sku">
+            <div class="job-card-top">
+              <h3>URL probe</h3>
+              <p class="price">$0.03</p>
+            </div>
+            <p class="job-benefit">Status, final URL, content-type, timing. First run free on the desk.</p>
+            <p class="sku-id">url-probe · featured</p>
+          </article>
+          <article class="card job-card">
+            <div class="job-card-top">
+              <h3>Page extract</h3>
+              <p class="price">$0.05</p>
+            </div>
+            <p class="job-benefit">Pull the useful text from a page so you can read or reuse it.</p>
+            <p class="sku-id">page-extract</p>
+          </article>
+          <article class="card job-card">
+            <div class="job-card-top">
+              <h3>Watch once</h3>
+              <p class="price">$0.10</p>
+            </div>
+            <p class="job-benefit">One-shot check of a target — a snapshot, not a monitoring plan.</p>
+            <p class="sku-id">watch-once</p>
+          </article>
+          <article class="card job-card">
+            <div class="job-card-top">
+              <h3>JSON shape</h3>
+              <p class="price">$0.15</p>
+            </div>
+            <p class="job-benefit">Normalize messy JSON so the next step can consume it cleanly.</p>
+            <p class="sku-id">json-shape</p>
+          </article>
+          <article class="card job-card">
+            <div class="job-card-top">
+              <h3>Brief</h3>
+              <p class="price">$0.25</p>
+            </div>
+            <p class="job-benefit">A researched brief with at least 3 cited sources — delivered within 24 hours (usually same day), ~500 words.</p>
+            <p class="sku-id">brief · within 24h</p>
+          </article>
+        </div>
+        <div class="callout">
+          Card Checkout floors at <strong>$0.50</strong>, so micro SKUs ship as packs (for example URL probe ×17). Full list on <a href="services.html">Services</a>.
+        </div>
+      </section>
+
+      <section class="home-section" aria-labelledby="faq-title">
+        <h2 id="faq-title">Questions people ask</h2>
+        <div class="faq" data-faq>
+          <details class="faq-item">
+            <summary>What is a pack?</summary>
+            <div class="faq-body">
+              <p>A prepaid bundle of job counts for one SKU (for example URL probe ×17). Stripe Checkout has a $0.50 floor, so single micro-jobs are sold as packs that clear that minimum.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>What do I get after paying?</summary>
+            <div class="faq-body">
+              <p>Leftover job counts on your purchase. The desk sets a private cookie after Checkout so you can keep running without pasting anything. Unused counts stay with the purchase.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Is the first probe really free?</summary>
+            <div class="faq-body">
+              <p>Yes — one free URL probe per browser on the live desk (with a modest per-network daily cap to limit abuse). After that, buy a pack to run more.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Agents vs people — what’s different?</summary>
+            <div class="faq-body">
+              <p>Same jobs, different payment rail. People buy Stripe packs on the desk. Agents pay USDC on Base via x402. Toggle <strong>Agents</strong> above for endpoints and discovery.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Where is the live desk?</summary>
+            <div class="faq-body">
+              <p>Hire UI + API: <a href="https://desk.grokaiapps.com">https://desk.grokaiapps.com</a>. This site: <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a>. Questions: <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a> · <a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a>.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="cta-band" aria-labelledby="cta-band-title">
+        <h2 id="cta-band-title">Ready when you are</h2>
+        <p>Open the desk, try the free probe, buy a pack when you want more.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://desk.grokaiapps.com">Open desk</a>
+          <a class="btn btn-secondary" href="buy.html">How to buy</a>
+          <a class="btn btn-ghost" href="services.html">See prices</a>
+        </div>
+      </section>
+    </div>
+
+    <div data-audience="agents" class="audience-panel" hidden>
+      <div class="cta-row hero-cta">
+        <a class="btn btn-primary" href="https://desk.grokaiapps.com/v1/discovery">GET /v1/discovery</a>
+        <a class="btn btn-secondary" href="https://desk.grokaiapps.com/AGENTS.md">AGENTS.md</a>
+        <a class="btn btn-secondary" href="for-agents.json">for-agents.json</a>
+        <a class="btn btn-ghost" href="buy.html?view=agents">Buy (agents)</a>
+      </div>
+
+      <h2>Base &amp; discovery</h2>
+      <ul class="endpoint-list">
+        <li><span class="verb">BASE</span> https://desk.grokaiapps.com</li>
+        <li><span class="verb">GET</span> /v1/discovery <span class="note">Free. SKUs, network, payTo.</span></li>
+        <li><span class="verb">GET</span> /v1/catalog <span class="note">Free catalog.</span></li>
+        <li><span class="verb">GET</span> /.well-known/x402 <span class="note">x402 discovery.</span></li>
+        <li><span class="verb">GET</span> /v1/packs <span class="note">Human Stripe packs (also free to list).</span></li>
+        <li><span class="verb">POST</span> /v1/mpp/packs/{pack_id} <span class="note">Agents paying by card: MPP (Stripe SPT) → X-Entitlement-Key.</span></li>
+        <li><span class="verb">GET</span> /openapi.json <span class="note">MPP discovery (x-payment-info).</span></li>
+        <li><span class="verb">GET</span> /v1/jobs/:id <span class="note">Job status — free.</span></li>
+      </ul>
+
+      <h2>SKUs (USDC on Base via x402)</h2>
+<pre class="agent-json">{
+  "skus": [
+    {"id":"url-probe","path":"POST /v1/jobs/url-probe","usd":0.03},
+    {"id":"page-extract","path":"POST /v1/jobs/page-extract","usd":0.05},
+    {"id":"watch-once","path":"POST /v1/jobs/watch-once","usd":0.10},
+    {"id":"json-shape","path":"POST /v1/jobs/json-shape","usd":0.15},
+    {"id":"brief","path":"POST /v1/jobs/brief","usd":0.25}
+  ],
+  "pay": "USDC Base · unpaid → HTTP 402 + PAYMENT-REQUIRED",
+  "humans": "Stripe packs · desk cookie after Checkout (agents: X-Entitlement-Key)"
+}</pre>
+
+      <h2>Example curls</h2>
+<pre>curl -sS https://desk.grokaiapps.com/v1/discovery
+
+curl -sS -i -X POST https://desk.grokaiapps.com/v1/jobs/url-probe \
+  -H 'content-type: application/json' \
+  -d '{"url":"https://example.com"}'
+# unpaid → HTTP 402 + PAYMENT-REQUIRED; settle USDC; retry with proof
+# (browser visitors may get one free probe via cookie — agents should pay)</pre>
+
+      <h2>Site map for agents</h2>
+      <ul class="endpoint-list">
+        <li><span class="verb">JSON</span> <a href="for-agents.json">for-agents.json</a> <span class="note">Catalog + links + example curls.</span></li>
+        <li><span class="verb">HTML</span> <a href="services.html?view=agents">services.html?view=agents</a></li>
+        <li><span class="verb">HTML</span> <a href="buy.html?view=agents">buy.html?view=agents</a></li>
+        <li><span class="verb">HTML</span> <a href="guide-agentic-payments.html?view=agents">guide-agentic-payments.html?view=agents</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>AUTOGROK Desk · <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a></p>
+    <p><a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a> · <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a> · <a href="https://desk.grokaiapps.com">Live desk</a></p>
+  </footer>
+  <script src="site.js?v=202610052130" defer></script>
+</body>
+</html>

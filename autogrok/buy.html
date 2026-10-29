@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to buy — AUTOGROK Desk</title>
+  <meta name="description" content="Buy AUTOGROK Desk jobs: Stripe packs for people, USDC/x402 for agents.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="stylesheet" href="styles.css?v=202610052130">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to buy AUTOGROK Desk jobs",
+    "description": "Stripe Checkout packs for humans; USDC on Base via x402 for agents.",
+    "url": "https://grokaiapps.com/autogrok/buy.html"
+  }
+  </script>
+</head>
+<body data-view="people">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">AUTOGROK <span>Desk</span></a>
+      <nav aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="buy.html" aria-current="page">Buy</a>
+        <a href="guide-agentic-payments.html">Guide</a>
+        <a href="lead.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>How to buy</h1>
+    <p class="lede">Two rails. Same desk. Card packs for people. USDC per call for agents.</p>
+
+    <div class="audience-toggle" role="tablist" aria-label="Audience">
+      <button type="button" role="tab" data-audience-btn="people" aria-selected="true">People</button>
+      <button type="button" role="tab" data-audience-btn="agents" aria-selected="false">Agents</button>
+    </div>
+
+    <div data-audience="people" class="audience-panel">
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://desk.grokaiapps.com">Open live desk</a>
+        <a class="btn btn-secondary" href="services.html">Pack prices</a>
+      </div>
+
+      <h2>Buy → run → result</h2>
+      <ol class="steps steps-cards">
+        <li>
+          <strong>Open the desk</strong>
+          <span>Go to <a href="https://desk.grokaiapps.com">desk.grokaiapps.com</a>. Try the free URL probe if you have not used it yet.</span>
+        </li>
+        <li>
+          <strong>Buy a pack</strong>
+          <span>On the desk, pick a pack and pay with a card on Stripe Checkout ($0.50 minimum, so micro jobs sell as packs).</span>
+        </li>
+        <li>
+          <strong>Keep running</strong>
+          <span>Checkout returns you to the desk with credits already loaded. No email or session id to paste — just run the next job.</span>
+        </li>
+        <li>
+          <strong>See the result</strong>
+          <span>Status and timing for a probe, extracted text for a page, and so on. No subscription.</span>
+        </li>
+      </ol>
+
+      <p>Pack examples: URL probe×17 $0.51 · page extract×10 $0.50 · watch×5 $0.50 · json×4 $0.60 · brief×2 $0.50. Full list on <a href="services.html">Services</a>.</p>
+
+      <div class="callout">
+        Buying happens on the live desk and Stripe’s hosted Checkout. This page does not embed a wallet or Checkout form. Stuck? <a href="lead.html">Contact</a>.
+      </div>
+    </div>
+
+    <div data-audience="agents" class="audience-panel" hidden>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://desk.grokaiapps.com/v1/discovery">Discovery</a>
+        <a class="btn btn-secondary" href="https://desk.grokaiapps.com/AGENTS.md">AGENTS.md</a>
+        <a class="btn btn-secondary" href="for-agents.json">for-agents.json</a>
+      </div>
+
+      <h2>Agent rail — USDC / x402</h2>
+      <p>Pay per call. No card. No pack.</p>
+<pre>BASE=https://desk.grokaiapps.com
+
+1. GET  $BASE/v1/discovery          # free
+2. POST $BASE/v1/jobs/{sku}         # unpaid → 402 + PAYMENT-REQUIRED
+3. Settle USDC on Base (x402 + CDP)
+4. POST same job + payment proof
+5. Receive result
+
+# Optional: prepaid pack for scripts
+# Header: X-Entitlement-Key: email|session_id</pre>
+
+      <h2>SKU prices</h2>
+<pre class="agent-json">{
+  "api_base": "https://desk.grokaiapps.com",
+  "skus": {
+    "url-probe": 0.03,
+    "page-extract": 0.05,
+    "watch-once": 0.10,
+    "json-shape": 0.15,
+    "brief": 0.25
+  },
+  "headers": {
+    "entitlement": "X-Entitlement-Key",
+    "payment": "x402 PAYMENT-REQUIRED / payment proof on retry"
+  },
+  "checkout": {
+    "list": "GET /v1/packs",
+    "create": "POST /v1/checkout/session {\"pack_id\":\"...\"}",
+    "humans_ui": "https://desk.grokaiapps.com (cookie after Checkout)"
+  }
+}</pre>
+
+      <h2>Example: unpaid probe</h2>
+<pre>curl -sS -i -X POST https://desk.grokaiapps.com/v1/jobs/url-probe \
+  -H 'content-type: application/json' \
+  -d '{"url":"https://example.com"}'</pre>
+
+      <h2>Example: entitlement spend (agents / scripts)</h2>
+<pre>curl -sS -X POST https://desk.grokaiapps.com/v1/jobs/page-extract \
+  -H 'content-type: application/json' \
+  -H 'X-Entitlement-Key: you@example.com' \
+  -d '{"url":"https://example.com"}'</pre>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>AUTOGROK Desk · <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a></p>
+    <p><a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a> · <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a></p>
+  </footer>
+  <script src="site.js?v=202610052130" defer></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+/* An earned amount lifts from its facet, then follows a short arc to the bank. */
+.payout-flight{position:fixed;inset:0;z-index:25;pointer-events:none;overflow:hidden;contain:strict}
+.payout-ticket{position:absolute;top:0;left:0;display:grid;justify-items:center;gap:5px;width:204px;text-align:center;will-change:transform,opacity;animation:payout-to-bank 1.55s cubic-bezier(.2,.7,.3,1) both}
+.payout-ticket strong{display:block;color:#ffdf91;font:800 clamp(32px,7vw,48px)/1.05 Manrope,system-ui,sans-serif;letter-spacing:-.045em;font-variant-numeric:tabular-nums;text-shadow:0 1px 0 #ffefc6,0 2px 0 #c9943e,0 3px 0 #87511f,0 6px 13px #0009,0 0 22px #f0c86e55;animation:payout-glisten 1.1s ease-out both}
+.payout-ticket small{order:1;max-width:164px;padding:4px 8px;border-radius:8px;background:#0a1725d9;color:#f1dfb1;border:1px solid #efcf772e;font:600 11px/1.25 Manrope,system-ui,sans-serif;letter-spacing:0;box-shadow:0 3px 10px #0003}
+.payout-flight[data-tone=quiet] .payout-ticket strong{color:#e1f2fc;text-shadow:0 2px 1px #376079,0 6px 12px #0008;animation:none}
+.payout-flight[data-tone=quiet] .payout-ticket small{color:#c6dce9;border-color:#bfdfff26}
+.payout-coins img{position:absolute;top:0;left:0;width:30px;height:30px;object-fit:contain;opacity:0;filter:drop-shadow(0 3px 4px #0007);will-change:transform,opacity;animation:payout-coin-flight 1.46s calc(var(--i)*.065s) cubic-bezier(.25,.7,.35,1) both}
+.payout-flight[data-mode=score] .payout-ticket{animation:landing-lift 1.2s ease-out both}
+.payout-flight[data-mode=score] .payout-ticket strong{font-size:clamp(32px,7vw,46px)}
+.payout-flight[data-mode=static] .payout-ticket{transform:translate(calc(var(--restingX) - 50%),calc(var(--restingY) - 50%));animation:none;gap:3px}
+.payout-flight[data-mode=static] .payout-ticket strong{font-size:22px;animation:none;text-shadow:none}
+#bank-amount[data-collected=gold]{animation:payout-bank-glow .85s ease-out both}
+#bank-amount[data-collected=gold] b{color:#ffe2a0;text-shadow:0 0 12px #e9bf6d50}
+#bank-amount[data-collected=quiet] b{color:#dff4ff}
+@keyframes payout-to-bank{
+ 0%{opacity:0;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50%)) scale(.55)}
+ 16%{opacity:1;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50% - 24px)) scale(1.08)}
+ 42%{opacity:1;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50% - 30px)) scale(1)}
+ 78%{opacity:1;transform:translate(calc(var(--bankX) - 50% + 16px),calc(var(--bankY) - 50% + 14px)) scale(.6)}
+ 100%{opacity:0;transform:translate(calc(var(--bankX) - 50%),calc(var(--bankY) - 50%)) scale(.22)}
+}
+@keyframes payout-coin-flight{
+ 0%{opacity:0;transform:translate(calc(var(--x) - 15px),calc(var(--y) - 15px)) scale(.5) rotateY(0deg)}
+ 20%{opacity:1;transform:translate(calc(var(--x) - 15px + var(--spread)),calc(var(--y) - 56px - var(--rise))) scale(1) rotateY(90deg)}
+ 43%{opacity:1;transform:translate(calc(var(--x) - 15px + var(--spread)),calc(var(--y) - 82px - var(--rise))) scale(.95) rotateY(200deg)}
+ 85%{opacity:1}
+ 100%{opacity:0;transform:translate(calc(var(--bankX) - 15px),calc(var(--bankY) - 15px)) scale(.24) rotateY(540deg)}
+}
+@keyframes payout-glisten{0%,100%{filter:brightness(1)}38%{filter:brightness(1.45) drop-shadow(0 0 7px #ffe5a45c)}}
+@keyframes payout-bank-glow{0%{box-shadow:0 0 0 0 #f9d98800}25%{background:#e6bf631c;box-shadow:0 0 0 6px #f9d98815,0 0 25px #e6bd5b35}100%{background:transparent;box-shadow:0 0 0 13px #f9d98800}}
+@keyframes landing-lift{0%{opacity:0;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50%)) scale(.72)}20%,65%{opacity:1;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50% - 20px)) scale(1)}100%{opacity:0;transform:translate(calc(var(--x) - 50%),calc(var(--y) - 50% - 38px)) scale(.95)}}
+@media(prefers-reduced-motion:reduce){.payout-ticket,.payout-ticket strong,#bank-amount[data-collected]{animation:none!important}.payout-coins{display:none}}

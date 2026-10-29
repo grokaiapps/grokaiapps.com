@@ -62,3 +62,5 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; box-sizing: bor
   .drop-button { height: 44px; font-size: 14px; }
   .new-game span { display: none; }
 }
+
+.tip-link{display:block;width:max-content;max-width:100%;margin:10px auto 0;color:#7a8a6f;font-size:12px;text-decoration:underline;text-decoration-color:#c9b77a;text-underline-offset:3px}.tip-link:hover{color:#4d6c57;text-decoration-color:#977225}

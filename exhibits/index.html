@@ -6,76 +6,103 @@
   <title>Exhibits — GROKAIAPPS</title>
   <meta name="description" content="Things to try. More will land here." />
   <link rel="canonical" href="https://grokaiapps.com/exhibits/" />
-  <meta name="theme-color" content="#f4efe6" />
+  <meta name="theme-color" content="#f3f3f1" id="theme-color" />
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("grokaiapps-theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") {
+        t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+      if (t === "dark") document.getElementById("theme-color").setAttribute("content", "#121212");
+    })();
+  </script>
   <meta property="og:title" content="Exhibits — GROKAIAPPS" />
   <meta property="og:description" content="Things to try. More will land here." />
   <meta property="og:url" content="https://grokaiapps.com/exhibits/" />
   <meta property="og:image" content="https://grokaiapps.com/exhibits/stylophone/og.jpg" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="../favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&display=swap" />
   <style>
     :root {
-      --cream: #f4efe6;
-      --paper: #faf7f1;
-      --ink: #1c2421;
-      --muted: #4d5a55;
-      --teal: #0f6b57;
-      --line: #d8cfc0;
-      --serif: "Palatino Linotype", Palatino, "Book Antiqua", "URW Palladio L", Georgia, "Times New Roman", serif;
-      --sans: "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --bg: #f3f3f1; --surface: #fafaf9; --raised: #e9e9e6; --line: #dcdcd7; --line-2: #c4c4be;
+      --fg: #141414; --fg-2: #353533; --muted: #666662; --faint: #9a9a95;
+      --accent: #8a6d43; --glass: rgba(243, 243, 241, 0.84);
+      --shadow: 0 1px 1px rgba(0, 0, 0, 0.04), 0 18px 40px -22px rgba(0, 0, 0, 0.3);
+      --f-display: "Newsreader", "Iowan Old Style", Palatino, Georgia, serif;
+      --f-ui: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+      color-scheme: light;
+    }
+    :root[data-theme="dark"] {
+      --bg: #121212; --surface: #181818; --raised: #202020; --line: #2a2a2a; --line-2: #3c3c3c;
+      --fg: #ededea; --fg-2: #c9c9c5; --muted: #8e8e89; --faint: #5e5e5a;
+      --accent: #c6a875; --glass: rgba(18, 18, 18, 0.84);
+      --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 22px 50px -24px rgba(0, 0, 0, 0.85);
+      color-scheme: dark;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      min-height: 100dvh;
-      font-family: var(--serif);
-      background:
-        radial-gradient(ellipse at 12% -10%, rgba(15, 107, 87, 0.07), transparent 46%),
-        var(--cream);
-      color: var(--ink);
-      line-height: 1.5;
+      min-height: 100dvh; background: var(--bg); color: var(--fg);
+      font: 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased;
     }
-    main { max-width: 42rem; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
-    a { color: var(--teal); }
+    a { color: var(--fg); }
+    :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; border-radius: 8px; }
+    .bar {
+      position: sticky; top: 0; z-index: 5; background: var(--glass);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .bar .wrap { height: 56px; display: flex; align-items: center; }
     .kicker {
-      font-family: var(--sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin: 0 0 0.45rem;
-      font-weight: 650;
-      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
+      font: 500 12.5px/1 var(--f-ui); letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg); text-decoration: none;
     }
-    h1 { font-weight: 400; font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 0.4rem; }
-    .muted { color: var(--muted); margin: 0 0 1.4rem; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-      gap: 0.85rem;
+    .kicker svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--muted); }
+    main { padding-top: clamp(20px, 5vh, 48px); padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
+    h1 { font: 300 clamp(36px, 7vw, 60px)/1.02 var(--f-display); letter-spacing: -0.028em; margin: 0 0 10px; }
+    .muted { color: var(--muted); margin: 0 0 clamp(20px, 4vh, 36px); font-size: 15.5px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px 18px; }
+    .card { display: flex; flex-direction: column; gap: 10px; color: inherit; text-decoration: none; border-radius: 14px; transition: transform 0.35s var(--ease); }
+    .card img {
+      width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block;
+      border-radius: 14px; border: 1px solid var(--line); background: var(--raised);
+      transition: border-color 0.3s, box-shadow 0.35s var(--ease);
     }
-    .card {
-      display: block;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      padding: 0.35rem;
-      color: inherit;
-      text-decoration: none;
-    }
-    .card:hover { border-color: var(--teal); }
-    .card img { width: 100%; height: 9rem; object-fit: cover; display: block; }
-    .card h2 { font-size: 1.1rem; font-weight: 400; margin: 0.6rem 0.65rem 0.2rem; }
-    .card p { font-size: 0.95rem; color: var(--muted); margin: 0 0.65rem 0.8rem; }
+    .card h2 { font: 500 16.5px/1.25 var(--f-ui); letter-spacing: -0.01em; margin: 0 2px; }
+    .card p { font-size: 14px; color: var(--muted); margin: -4px 2px 0; }
+    .card:hover { transform: translateY(-2px); }
+    .card:hover img { border-color: var(--line-2); box-shadow: var(--shadow); }
     footer {
-      margin-top: 2.2rem;
-      font-family: var(--sans);
-      font-size: 0.85rem;
+      margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+      font: 400 13px/1.4 var(--f-mono); color: var(--faint);
     }
+    footer a { color: var(--fg-2); text-decoration: none; min-height: 40px; display: inline-flex; align-items: center; }
+    footer a:hover { color: var(--fg); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr 1fr; gap: 20px 12px; }
+      .card h2 { font-size: 15px; }
+      .card p { font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
-  <main>
-    <p><a class="kicker" href="https://grokaiapps.com/">GROKAIAPPS</a></p>
+  <header class="bar">
+    <div class="wrap">
+      <a class="kicker" href="https://grokaiapps.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>GROKAIAPPS</a>
+    </div>
+  </header>
+  <main class="wrap">
     <h1>Exhibits</h1>
     <p class="muted">Things to try. More will land here.</p>
     <div class="grid">
@@ -119,11 +146,17 @@
         <h2>Cliff Hangers</h2>
         <p>Three prices. Twenty-five steps. Keep the yodeler on the mountain.</p>
       </a>
+      <a class="card" href="big-wheel/">
+        <img src="big-wheel/og.jpg" alt="The Big Wheel Showcase Showdown fan game" width="640" height="360" />
+        <h2>The Big Wheel</h2>
+        <p>Spin toward a dollar. Cash out or go for broke in Showcase Showdown.</p>
+      </a>
+
     </div>
     <footer>
       <a href="https://grokaiapps.com/">Back to grokaiapps.com</a>
       ·
-      <a href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/grokaiapps/grokaiapps.com" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="margin-right:7px"><path d="M12 1C5.923 1 1 5.923 1 12c0 4.867 3.149 8.979 7.521 10.436.55.096.756-.233.756-.522 0-.262-.013-1.128-.013-2.049-2.764.509-3.479-.674-3.699-1.292-.124-.317-.66-1.293-1.127-1.554-.385-.207-.936-.715-.014-.729.866-.014 1.485.797 1.691 1.128.99 1.663 2.571 1.196 3.204.907.096-.715.385-1.196.701-1.471-2.448-.275-5.005-1.224-5.005-5.432 0-1.196.426-2.186 1.128-2.956-.111-.275-.496-1.402.11-2.915 0 0 .921-.288 3.024 1.128a10.193 10.193 0 0 1 2.75-.371c.936 0 1.871.123 2.75.371 2.104-1.43 3.025-1.128 3.025-1.128.605 1.513.221 2.64.111 2.915.701.77 1.127 1.747 1.127 2.956 0 4.222-2.571 5.157-5.019 5.432.399.344.743 1.004.743 2.035 0 1.471-.014 2.654-.014 3.025 0 .289.206.632.756.522C19.851 20.979 23 16.854 23 12c0-6.077-4.922-11-11-11Z"/></svg>GitHub</a>
     </footer>
   </main>
 </body>

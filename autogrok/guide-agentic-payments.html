@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic payments guide — AUTOGROK Desk</title>
+  <meta name="description" content="How-to: Stripe Checkout packs for people + x402/USDC/CDP for agents. Honest gotchas.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="stylesheet" href="styles.css?v=202610052130">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Agentic payments: Stripe packs + x402 USDC",
+    "description": "Dual-rail payments desk: Stripe Checkout packs for humans, USDC on Base via x402 + CDP for agents.",
+    "url": "https://grokaiapps.com/autogrok/guide-agentic-payments.html",
+    "author": {"@type": "Organization", "name": "GrokAiApps"}
+  }
+  </script>
+</head>
+<body data-view="people">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">AUTOGROK <span>Desk</span></a>
+      <nav aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="buy.html">Buy</a>
+        <a href="guide-agentic-payments.html" aria-current="page">Guide</a>
+        <a href="lead.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Agentic payments guide</h1>
+    <p class="lede">Stand up a dual-rail desk: <strong>Stripe packs for people</strong>, <strong>USDC on Base via x402 + CDP for agents</strong>. Working example: <a href="https://desk.grokaiapps.com">desk.grokaiapps.com</a>.</p>
+
+    <div class="audience-toggle" role="tablist" aria-label="Audience">
+      <button type="button" role="tab" data-audience-btn="people" aria-selected="true">People</button>
+      <button type="button" role="tab" data-audience-btn="agents" aria-selected="false">Agents</button>
+    </div>
+
+    <div data-audience="people" class="audience-panel">
+      <h2>Two rails, one desk</h2>
+      <table>
+        <thead>
+          <tr><th>Rail</th><th>Who</th><th>How</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Human</td>
+            <td>People with cards</td>
+            <td>Stripe Checkout packs on the desk → cookie credits → run jobs</td>
+          </tr>
+          <tr>
+            <td>Agent</td>
+            <td>Machines with wallets</td>
+            <td>Discover → unpaid POST → HTTP 402 → settle USDC → retry</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Do not force agents through card Checkout. Do not force people through on-chain USDC.</p>
+
+      <h2>People path (summary)</h2>
+      <ol class="steps">
+        <li><strong>Price for the $0.50 floor.</strong> Card Checkout needs totals ≥ $0.50. Sell packs, not lone $0.03 charges.</li>
+        <li><strong>Expose packs.</strong> <code>GET /v1/packs</code> — stable pack ids, credit counts, prices.</li>
+        <li><strong>Create Checkout server-side.</strong> <code>POST /v1/checkout/session</code> → hosted Checkout URL. Never put secret keys in the browser.</li>
+        <li><strong>Credit on webhook.</strong> Verify <code>checkout.session.completed</code> with <code>STRIPE_WEBHOOK_SECRET</code>.</li>
+        <li><strong>Keep leftovers in Stripe.</strong> Ephemeral disk dies on redeploy. Prepaid counts must survive.</li>
+        <li><strong>Humans run on the desk.</strong> After Checkout, <a href="https://desk.grokaiapps.com">desk.grokaiapps.com</a> sets a private credits cookie — no key to paste. (Agents/scripts may still use <code>X-Entitlement-Key</code>.)</li>
+      </ol>
+
+      <h2>Agent path (summary)</h2>
+      <ol class="steps">
+        <li><strong>Publish free discovery.</strong> Catalog, network, pay-to. Desk uses <code>/v1/discovery</code>, <code>/v1/catalog</code>, <code>/.well-known/x402</code>.</li>
+        <li><strong>Return HTTP 402 when unpaid.</strong> Include <code>PAYMENT-REQUIRED</code> (amount, Base / <code>eip155:8453</code>, pay-to).</li>
+        <li><strong>Settle via CDP when live.</strong> Verify with CDP keys. Stub settlement is for local smoke only.</li>
+        <li><strong>Retry with payment proof.</strong> Same job POST, plus payment headers.</li>
+        <li><strong>Keep free paths free.</strong> Discovery, health, job status reads.</li>
+      </ol>
+
+      <h2>Honest gotchas</h2>
+      <div class="callout warn">
+        <ol>
+          <li><strong>Checkout $0.50 floor.</strong> Packs are the product design.</li>
+          <li><strong>Shared-hosting bot / captcha.</strong> Agent and webhook traffic can get blocked. Prefer a container host (e.g. Render) for the live API.</li>
+          <li><strong>Leftovers must not live only on ephemeral disk.</strong> Persist via Stripe or another durable store.</li>
+          <li><strong>Stub settlement ≠ live money.</strong> Production must verify.</li>
+          <li><strong>Webhook authenticity.</strong> Enforce <code>STRIPE_WEBHOOK_SECRET</code>.</li>
+          <li><strong>Rate limits.</strong> Per-IP and per-entitlement on paid routes.</li>
+        </ol>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://desk.grokaiapps.com">Open live desk</a>
+        <a class="btn btn-secondary" href="buy.html">How to buy</a>
+        <a class="btn btn-secondary" href="services.html">SKU list</a>
+        <a class="btn btn-secondary" href="lead.html">Questions</a>
+      </div>
+    </div>
+
+    <div data-audience="agents" class="audience-panel" hidden>
+      <h2>Compact reference</h2>
+<pre class="agent-json">{
+  "example": "https://desk.grokaiapps.com",
+  "rails": {
+    "human": "Stripe Checkout packs on desk UI → cookie credits; scripts may use X-Entitlement-Key",
+    "agent": "discover → POST unpaid → 402 + PAYMENT-REQUIRED → USDC Base x402 → retry"
+  },
+  "discovery": [
+    "GET /v1/discovery",
+    "GET /v1/catalog",
+    "GET /.well-known/x402",
+    "GET /v1/packs"
+  ],
+  "skus_usd": {
+    "url-probe": 0.03,
+    "page-extract": 0.05,
+    "watch-once": 0.10,
+    "json-shape": 0.15,
+    "brief": 0.25
+  },
+  "gotchas": [
+    "stripe_checkout_min_0.50",
+    "avoid_shared_host_captcha_on_api",
+    "persist_entitlements_in_stripe_not_ephemeral_disk",
+    "stub_settlement_dev_only",
+    "verify_webhook_signatures",
+    "rate_limit_paid_routes"
+  ],
+  "site_catalog": "https://grokaiapps.com/autogrok/for-agents.json"
+}</pre>
+
+      <h3>Human flow</h3>
+<pre>1. Open https://desk.grokaiapps.com (hire UI)
+2. POST /v1/checkout/session  {"pack_id":"pack_url_probe_17"}  # or Buy on UI
+3. Human completes Checkout URL
+4. Webhook credits entitlement; /checkout/success sets HttpOnly cookie
+5. Browser runs jobs with cookie (no paste)
+   Scripts may send: X-Entitlement-Key: buyer@example.com</pre>
+
+      <h3>Agent flow</h3>
+<pre>1. GET  /v1/discovery          # free — SKUs, network, payTo
+2. POST /v1/jobs/url-probe     # unpaid → HTTP 402 + PAYMENT-REQUIRED
+3. Client pays USDC on Base (x402)
+4. POST same job + payment proof headers
+5. Job runs; return result</pre>
+
+      <h3>Suggested build order</h3>
+<pre>1. Job handlers + local bypass (dev only)
+2. Free discovery/catalog JSON
+3. x402 middleware: 402 + PAYMENT-REQUIRED → CDP verify
+4. Stripe packs + Checkout session + signed webhook
+5. Durable leftover storage (Stripe-backed)
+6. Deploy API where agents are not captcha'd
+7. Static marketing site</pre>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="for-agents.json">for-agents.json</a>
+        <a class="btn btn-secondary" href="https://desk.grokaiapps.com/v1/discovery">Live discovery</a>
+        <a class="btn btn-secondary" href="buy.html?view=agents">Buy (agents)</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>AUTOGROK Desk · <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a></p>
+    <p><a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a> · <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a></p>
+  </footer>
+  <script src="site.js?v=202610052130" defer></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+{
+  "name": "AUTOGROK Desk",
+  "description": "Hireable micro-jobs desk. Pay per call. Stripe packs for humans; USDC on Base via x402 for agents.",
+  "site": "https://grokaiapps.com/autogrok/",
+  "api_base": "https://desk.grokaiapps.com",
+  "contact": {
+    "email": "grokaiapps@gmail.com",
+    "x": "https://x.com/GrokAiAppsAI"
+  },
+  "discovery": {
+    "discovery": "https://desk.grokaiapps.com/v1/discovery",
+    "catalog": "https://desk.grokaiapps.com/v1/catalog",
+    "x402": "https://desk.grokaiapps.com/.well-known/x402",
+    "packs": "https://desk.grokaiapps.com/v1/packs",
+    "for_agents_json": "https://grokaiapps.com/autogrok/for-agents.json",
+    "mcp": "https://desk.grokaiapps.com/mcp",
+    "openapi": "https://desk.grokaiapps.com/openapi.json",
+    "llms_txt": "https://desk.grokaiapps.com/llms.txt"
+  },
+  "payments": {
+    "humans": {
+      "rail": "stripe_checkout_packs",
+      "min_total_usd": 0.5,
+      "ui": "https://desk.grokaiapps.com",
+      "after_checkout": "HttpOnly entitlement cookie on /checkout/success — humans do not paste keys",
+      "leftover_storage": "Stripe (prepaid job counts survive with purchase)"
+    },
+    "agents": {
+      "rail": "usdc_base_x402_cdp",
+      "network": "Base (eip155:8453)",
+      "unpaid_response": "HTTP 402 + PAYMENT-REQUIRED header",
+      "entitlement_header_optional": "X-Entitlement-Key (email, Checkout session id, or MPP agk.… key) for prepaid packs"
+    },
+    "humans_note": "Humans: buy and run on desk.grokaiapps.com (cookie after Checkout). Agents: USDC/x402 or optional X-Entitlement-Key.",
+    "agents_cards": {
+      "rail": "mpp_stripe_spt_card_packs",
+      "endpoint": "POST https://desk.grokaiapps.com/v1/mpp/packs/{pack_id}",
+      "unpaid_response": "HTTP 402 + WWW-Authenticate: Payment method=\"stripe\", intent=\"charge\"",
+      "networkId": "profile_61VWqT6yAHyjIP6EJA6VWqT668SQipSDos48kYNEeAxc",
+      "stripe_profile": "@autogrokdesk",
+      "returns": "entitlement_key (agk.…) for X-Entitlement-Key on /v1/jobs/* and /mcp",
+      "top_up": "send existing X-Entitlement-Key with the purchase",
+      "scope": "packs only ($0.50–$0.60 card minimum); per-call stays on x402"
+    }
+  },
+  "skus": [
+    {
+      "id": "url-probe",
+      "path": "/v1/jobs/url-probe",
+      "method": "POST",
+      "price_usd": 0.03,
+      "summary": "Check a URL: status, final URL, content-type, timing"
+    },
+    {
+      "id": "page-extract",
+      "path": "/v1/jobs/page-extract",
+      "method": "POST",
+      "price_usd": 0.05,
+      "summary": "Pull useful text/structure from a page"
+    },
+    {
+      "id": "watch-once",
+      "path": "/v1/jobs/watch-once",
+      "method": "POST",
+      "price_usd": 0.1,
+      "summary": "One-shot watch/check snapshot (not a subscription)"
+    },
+    {
+      "id": "json-shape",
+      "path": "/v1/jobs/json-shape",
+      "method": "POST",
+      "price_usd": 0.15,
+      "summary": "Shape or normalize JSON for the next step"
+    },
+    {
+      "id": "brief",
+      "path": "/v1/jobs/brief",
+      "method": "POST",
+      "price_usd": 0.25,
+      "summary": "Researched written brief: delivered within 24h (usually same day), ~500 words (max_words 50-1500), at least 3 cited sources; poll GET /v1/jobs/:id",
+      "promise": {
+        "turnaround_hours": 24,
+        "default_words": 500,
+        "max_words": 1500,
+        "min_sources": 3,
+        "delivery": "GET /v1/jobs/:id or MCP brief_status"
+      }
+    }
+  ],
+  "packs": [
+    {
+      "id": "pack_page_extract_10",
+      "label": "Page extract ×10",
+      "sku": "page-extract",
+      "credits": 10,
+      "price_usd": 0.5
+    },
+    {
+      "id": "pack_url_probe_17",
+      "label": "URL probe ×17",
+      "sku": "url-probe",
+      "credits": 17,
+      "price_usd": 0.51
+    },
+    {
+      "id": "pack_watch_5",
+      "label": "Watch ×5",
+      "sku": "watch-once",
+      "credits": 5,
+      "price_usd": 0.5
+    },
+    {
+      "id": "pack_json_4",
+      "label": "JSON ×4",
+      "sku": "json-shape",
+      "credits": 4,
+      "price_usd": 0.6
+    },
+    {
+      "id": "pack_brief_2",
+      "label": "Brief ×2",
+      "sku": "brief",
+      "credits": 2,
+      "price_usd": 0.5
+    }
+  ],
+  "free_endpoints": [
+    "GET /v1/discovery",
+    "GET /v1/catalog",
+    "GET /.well-known/x402",
+    "GET /v1/packs",
+    "GET /v1/jobs/:id",
+    "GET /openapi.json"
+  ],
+  "pages": {
+    "home": "https://grokaiapps.com/autogrok/",
+    "services": "https://grokaiapps.com/autogrok/services.html",
+    "buy": "https://grokaiapps.com/autogrok/buy.html",
+    "guide": "https://grokaiapps.com/autogrok/guide-agentic-payments.html",
+    "contact": "https://grokaiapps.com/autogrok/lead.html"
+  },
+  "example_curls": {
+    "discovery": "curl -sS https://desk.grokaiapps.com/v1/discovery",
+    "packs": "curl -sS https://desk.grokaiapps.com/v1/packs",
+    "job_unpaid": "curl -sS -i -X POST https://desk.grokaiapps.com/v1/jobs/url-probe -H 'content-type: application/json' -d '{\"url\":\"https://example.com\"}'",
+    "job_with_entitlement": "curl -sS -X POST https://desk.grokaiapps.com/v1/jobs/page-extract -H 'content-type: application/json' -H 'X-Entitlement-Key: you@example.com' -d '{\"url\":\"https://example.com\"}'"
+  },
+  "endpoints": {
+    "agents_md": "https://desk.grokaiapps.com/AGENTS.md",
+    "hire_ui": "https://desk.grokaiapps.com/"
+  },
+  "mcp": {
+    "url": "https://desk.grokaiapps.com/mcp",
+    "transport": "streamable-http",
+    "free": [
+      "initialize",
+      "tools/list",
+      "brief_status"
+    ],
+    "tools": {
+      "url_probe": 0.03,
+      "page_extract": 0.05,
+      "watch_once": 0.1,
+      "json_shape": 0.15,
+      "brief": 0.25,
+      "brief_status": 0
+    },
+    "payment": "x402 per tools/call (PaymentRequired in tool result structuredContent; pay via _meta['x402/payment']) or header X-Entitlement-Key for pack credits (Checkout email/session or MPP agk.… key)",
+    "client_config": {
+      "mcpServers": {
+        "autogrok-desk": {
+          "url": "https://desk.grokaiapps.com/mcp"
+        }
+      }
+    }
+  },
+  "mpp": {
+    "endpoint": "https://desk.grokaiapps.com/v1/mpp/packs/{pack_id}",
+    "method": "stripe",
+    "intent": "charge",
+    "networkId": "profile_61VWqT6yAHyjIP6EJA6VWqT668SQipSDos48kYNEeAxc",
+    "packs": {
+      "pack_url_probe_17": 0.51,
+      "pack_page_extract_10": 0.5,
+      "pack_watch_5": 0.5,
+      "pack_json_4": 0.6,
+      "pack_brief_2": 0.5
+    },
+    "openapi": "https://desk.grokaiapps.com/openapi.json",
+    "example": [
+      "link-cli spend-request create --credential-type shared_payment_token --network-id profile_61VWqT6yAHyjIP6EJA6VWqT668SQipSDos48kYNEeAxc --amount 51 --merchant-name \"AUTOGROK Desk\" --merchant-url https://desk.grokaiapps.com --context \"<100+ chars>\" --request-approval",
+      "link-cli mpp pay https://desk.grokaiapps.com/v1/mpp/packs/pack_url_probe_17 --spend-request-id lsrq_… --method POST",
+      "curl -X POST https://desk.grokaiapps.com/v1/jobs/url-probe -H 'X-Entitlement-Key: agk.…' -H 'content-type: application/json' -d '{\"url\":\"https://example.com\"}'"
+    ]
+  }
+}

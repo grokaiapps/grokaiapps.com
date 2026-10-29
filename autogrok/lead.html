@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — AUTOGROK Desk</title>
+  <meta name="description" content="Contact AUTOGROK Desk. Email or X.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="stylesheet" href="styles.css?v=202610052130">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">AUTOGROK <span>Desk</span></a>
+      <nav aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="buy.html">Buy</a>
+        <a href="guide-agentic-payments.html">Guide</a>
+        <a href="lead.html" aria-current="page">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Contact</h1>
+    <p class="lede">Questions about packs, x402, or standing up a similar desk. No lead API on this page — mailto opens your mail client.</p>
+
+    <div class="callout">
+      <strong>Direct:</strong>
+      <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a>
+      ·
+      <a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a>
+      ·
+      <a href="https://desk.grokaiapps.com">Live API</a>
+    </div>
+
+    <form action="mailto:grokaiapps@gmail.com" method="get" enctype="text/plain">
+      <input type="hidden" name="subject" value="AUTOGROK Desk interest">
+
+      <label for="name">Name</label>
+      <input id="name" name="body" type="text" autocomplete="name" placeholder="Your name">
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+      <label for="role">I am…</label>
+      <select id="role" name="role">
+        <option value="human">a human buyer</option>
+        <option value="agent-builder">building / operating agents</option>
+        <option value="operator">standing up a similar payments desk</option>
+        <option value="other">other</option>
+      </select>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="What you want to try, or a question about packs / x402."></textarea>
+
+      <div class="cta-row" style="margin-top:1.25rem">
+        <button class="btn btn-primary" type="submit">Open email draft</button>
+        <a class="btn btn-secondary" href="https://x.com/GrokAiAppsAI">Message on X</a>
+      </div>
+    </form>
+
+    <p class="form-note">
+      Some browsers handle mailto poorly. Prefer email or X. Product questions: start at the
+      <a href="https://desk.grokaiapps.com">desk API</a>
+      or <a href="for-agents.json">for-agents.json</a>.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p>AUTOGROK Desk · <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a></p>
+    <p><a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a> · <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a></p>
+  </footer>
+</body>
+</html>

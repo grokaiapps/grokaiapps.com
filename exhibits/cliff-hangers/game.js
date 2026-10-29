@@ -158,7 +158,7 @@ function tick(now) {
   if(phase==='climbing'||phase==='falling'||particles.length||calloutUntil)frameId=requestAnimationFrame(tick);else lastFrame=0;
 }
 function showResults() {
-  const won=phase==='won';$('result-eyebrow').textContent=won?'HE MADE IT!':'OH NO, YODELY GUY!';$('result-title').innerHTML=won?'You’re off to<br>the Swiss Alps.':'That was a<br>cliff hanger.';
+  const won=phase==='won';$('result-tip').hidden=!won;$('result-eyebrow').textContent=won?'HE MADE IT!':'OH NO, YODELY GUY!';$('result-title').innerHTML=won?'You’re off to<br>the Swiss Alps.':'That was a<br>cliff hanger.';
   $('result-number').textContent=won?'$8,764':'STEP 26';$('result-copy').textContent=won?`You finished with ${history.reduce((n,h)=>n+h.error,0)} dollars of total error. The grand prize is yours!`:'The total error passed $25, sending the climber over the edge.';
   $('result-table').innerHTML='<div class="result-row heading"><span>PRIZE</span><span>GUESS</span><span>PRICE</span><span>ERROR</span></div>'+history.map(h=>`<div class="result-row"><span>${h.product.short}</span><span>${cash(h.guess)}</span><span>${cash(h.price)}</span><strong>${cash(h.error)}</strong></div>`).join('');
   const kept=history.filter(h=>!h.fell);$('result-kept').textContent=kept.length?'You also keep: '+kept.map(h=>h.product.short.toLowerCase()).join(', ')+'.':'No small prizes secured this time.';

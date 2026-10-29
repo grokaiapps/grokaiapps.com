@@ -2,61 +2,254 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>GROKAIAPPS image gallery</title>
+  <meta name="theme-color" content="#f3f3f1" id="theme-color" />
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("grokaiapps-theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") {
+        t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.classList.add("js");
+      if (t === "dark") document.getElementById("theme-color").setAttribute("content", "#121212");
+    })();
+  </script>
+  <link rel="icon" href="../favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&display=swap" />
   <style>
-    :root { --bg:#f4efe6; --ink:#1c2421; --muted:#4d5a55; --accent:#0f6b57; --line:#d8cfc0; }
+    :root {
+      --bg: #f3f3f1; --surface: #fafaf9; --raised: #e9e9e6; --line: #dcdcd7; --line-2: #c4c4be;
+      --fg: #141414; --fg-2: #353533; --muted: #666662; --faint: #9a9a95;
+      --accent: #8a6d43; --glass: rgba(243, 243, 241, 0.84);
+      --shadow: 0 1px 1px rgba(0, 0, 0, 0.04), 0 18px 40px -22px rgba(0, 0, 0, 0.3);
+      --f-display: "Newsreader", "Iowan Old Style", Palatino, Georgia, serif;
+      --f-ui: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+      color-scheme: light;
+    }
+    :root[data-theme="dark"] {
+      --bg: #121212; --surface: #181818; --raised: #202020; --line: #2a2a2a; --line-2: #3c3c3c;
+      --fg: #ededea; --fg-2: #c9c9c5; --muted: #8e8e89; --faint: #5e5e5a;
+      --accent: #c6a875; --glass: rgba(18, 18, 18, 0.84);
+      --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 22px 50px -24px rgba(0, 0, 0, 0.85);
+      color-scheme: dark;
+    }
     * { box-sizing: border-box; }
-    body { margin:0; font-family: Georgia, serif; background:var(--bg); color:var(--ink); }
-    main { max-width: 56rem; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
-    a { color: var(--accent); }
-    h1 { font-weight:400; font-size:1.8rem; }
-    h2 { font-family: ui-sans-serif, system-ui, sans-serif; font-size:.9rem; letter-spacing:.06em; text-transform:uppercase; margin:2.2rem 0 .8rem; }
-    .muted { color:var(--muted); }
-    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .8rem; }
-    .grid.wide { grid-template-columns: 1fr; }
-    figure { margin:0; background:#fff; border:1px solid var(--line); padding:.5rem; }
-    figure img { width:100%; height:auto; display:block; }
-    figcaption { font-family: ui-sans-serif, system-ui, sans-serif; font-size:.75rem; margin-top:.4rem; color:var(--muted); }
-    .pick { outline: 2px solid var(--accent); }
+    html, body { margin: 0; padding: 0; }
+    body { min-height: 100dvh; background: var(--bg); color: var(--fg); font: 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; }
+    a { color: var(--fg); }
+    :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; border-radius: 8px; }
+    .bar {
+      position: sticky; top: 0; z-index: 5; background: var(--glass);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .bar .wrap { height: 56px; display: flex; align-items: center; }
+    .bar p { margin: 0; }
+    .bar a {
+      display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
+      font: 500 12.5px/1 var(--f-ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg); text-decoration: none;
+    }
+    .bar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--muted); }
+    main { padding-top: clamp(20px, 5vh, 48px); padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+    h1 { font: 300 clamp(36px, 7vw, 60px)/1.02 var(--f-display); letter-spacing: -0.028em; margin: 0 0 12px; }
+    h2 { font: 500 11px/1.2 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 40px 0 14px; }
+    .muted { color: var(--muted); max-width: 44rem; margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .grid + .muted { margin-top: 14px; font-size: 14px; }
+    figure {
+      margin: 0; position: relative; cursor: zoom-in; border-radius: 14px; overflow: hidden;
+      background: var(--raised); border: 1px solid var(--line);
+      transition: border-color 0.3s, box-shadow 0.35s var(--ease), transform 0.35s var(--ease);
+    }
+    figure img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    :root { --sk-base: #e4e4e0; --sk-hi: rgba(255, 255, 255, 0.9); }
+    :root[data-theme="dark"] { --sk-base: #232322; --sk-hi: rgba(255, 255, 255, 0.09); }
+    .media { position: relative; display: block; overflow: hidden; aspect-ratio: 1; background: var(--sk-base); }
+    .media::before {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(100deg, transparent 30%, var(--sk-hi) 50%, transparent 70%) no-repeat;
+      background-size: 200% 100%; animation: shimmer 1.3s ease-in-out infinite;
+    }
+    .media.loaded::before, .media.failed::before { display: none; }
+    .js .media img { opacity: 0; transition: opacity 0.6s var(--ease); }
+    .js .media.loaded img { opacity: 1; }
+    @keyframes shimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+    @keyframes skpulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.7; } }
+    figure:hover { border-color: var(--line-2); box-shadow: var(--shadow); transform: translateY(-2px); }
+    figcaption {
+      font: 400 11.5px/1.4 var(--f-mono); color: var(--muted);
+      padding: 10px 12px 12px; background: var(--surface); border-top: 1px solid var(--line);
+    }
+    .pick { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .pick figcaption::before {
+      content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); margin-right: 7px; vertical-align: 1px;
+    }
+
+    .lb {
+      position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: color-mix(in srgb, var(--bg) 94%, transparent);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      padding: calc(64px + env(safe-area-inset-top, 0px)) 16px calc(72px + env(safe-area-inset-bottom, 0px));
+      animation: fade 0.3s ease;
+    }
+    .lb[hidden] { display: none; }
+    @keyframes fade { from { opacity: 0; } }
+    .lb img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px; box-shadow: var(--shadow); background: var(--sk-base); transition: filter 0.35s var(--ease), opacity 0.35s var(--ease); }
+    .lb img.v-low { filter: blur(10px); }
+    .v-spin { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--fg) 14%, transparent); border-top-color: var(--accent); opacity: 0; pointer-events: none; transition: opacity 0.2s; animation: vspin 0.9s linear infinite; }
+    .lb.v-loading .v-spin { opacity: 1; transition-delay: 0.12s; }
+    @keyframes vspin { to { transform: rotate(360deg); } }
+    .lb .v-orig { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); left: 16px; min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); color: var(--fg-2); font: 500 11px/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
+    .lb-cap { position: absolute; left: 0; right: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); text-align: center; font: 400 12.5px/1.4 var(--f-mono); color: var(--muted); padding: 0 70px; }
+    .lb button {
+      position: absolute; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      background: var(--surface); border: 1px solid var(--line); color: var(--fg); cursor: pointer;
+    }
+    .lb button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .lb .x { top: calc(12px + env(safe-area-inset-top, 0px)); right: 16px; }
+    .lb .prev { left: 16px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .lb .next { right: 16px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .media:not(.loaded):not(.failed)::before { background: var(--sk-hi); animation: skpulse 1.6s ease-in-out infinite !important; }
+      .v-spin { border-color: var(--accent); }
+      .lb img.v-low { filter: none; opacity: 0.55; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <p><a href="../index.html">GROKAIAPPS</a></p>
+  <header class="bar">
+    <div class="wrap">
+      <p><a href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>GROKAIAPPS</a></p>
+    </div>
+  </header>
+  <main class="wrap">
     <h1>Image gallery</h1>
     <p class="muted">Every still Wayne sent, kept. Picks for live use are marked. Midjourney, August 2026, pond / ripple / mark set.</p>
 
     <h2>In use</h2>
     <div class="grid">
-      <figure class="pick">
-        <img src="selected/avatar-800.jpg" alt="Avatar: black and teal enso" />
-        <figcaption>Avatar / mark — IMG_3541</figcaption>
-      </figure>
-      <figure class="pick">
-        <img src="selected/header.jpg" alt="Header crop of teal pond print" />
-        <figcaption>X header — crop of IMG_3538</figcaption>
-      </figure>
+      <figure class="pick" data-large="large/avatar-800-800.jpg" data-lw="800" data-lh="800" data-original="selected/avatar-800.jpg"><span class="media"><img src="thumbs/avatar-800-480.jpg" srcset="thumbs/avatar-800-480.jpg 480w, thumbs/avatar-800-640.jpg 640w, thumbs/avatar-800-800.jpg 800w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="Avatar: black and teal enso" loading="lazy" decoding="async" /></span><figcaption>Avatar / mark — IMG_3541</figcaption></figure>
+      <figure class="pick" data-large="large/header-1500.jpg" data-lw="1500" data-lh="500" data-original="selected/header.jpg"><span class="media"><img src="thumbs/header-960.jpg" srcset="thumbs/header-960.jpg 960w, thumbs/header-1500.jpg 1500w" sizes="(max-width: 600px) 138vw, 720px" width="960" height="320" alt="Header crop of teal pond print" loading="lazy" decoding="async" /></span><figcaption>X header — crop of IMG_3538</figcaption></figure>
     </div>
     <p class="muted">Alternate header crop of the literal pond (IMG_3549) is in selected/header-pond.jpg if we want it later.</p>
 
     <h2>All originals</h2>
     <div class="grid">
-      <figure><img src="originals/pond/IMG_3537.JPG" alt="" /><figcaption>IMG_3537 — print, teal field + ripple + splatter</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3538.JPG" alt="" /><figcaption>IMG_3538 — same family, header source</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3539.JPG" alt="" /><figcaption>IMG_3539 — blotch with inner ripples</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3540.JPG" alt="" /><figcaption>IMG_3540 — teal enso</figcaption></figure>
-      <figure class="pick"><img src="originals/pond/IMG_3541.JPG" alt="" /><figcaption>IMG_3541 — black + teal enso (avatar)</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3542.JPG" alt="" /><figcaption>IMG_3542 — circular splash + ripples</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3543.JPG" alt="" /><figcaption>IMG_3543 — stamp halo + horizon</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3544.JPG" alt="" /><figcaption>IMG_3544 — circle with crosshairs</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3545.JPG" alt="" /><figcaption>IMG_3545 — dark teal enso</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3546.JPG" alt="" /><figcaption>IMG_3546 — ring with a stem</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3547.JPG" alt="" /><figcaption>IMG_3547 — wash + drafting lines</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3548.JPG" alt="" /><figcaption>IMG_3548 — concentric brush ring</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3549.JPG" alt="" /><figcaption>IMG_3549 — pond ripples</figcaption></figure>
-      <figure><img src="originals/pond/IMG_3550.JPG" alt="" /><figcaption>IMG_3550 — drop and rings</figcaption></figure>
+      <figure data-large="large/IMG_3537-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3537.JPG"><span class="media"><img src="thumbs/IMG_3537-480.jpg" srcset="thumbs/IMG_3537-480.jpg 480w, thumbs/IMG_3537-640.jpg 640w, thumbs/IMG_3537-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3537 — print, teal field + ripple + splatter</figcaption></figure>
+      <figure data-large="large/IMG_3538-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3538.JPG"><span class="media"><img src="thumbs/IMG_3538-480.jpg" srcset="thumbs/IMG_3538-480.jpg 480w, thumbs/IMG_3538-640.jpg 640w, thumbs/IMG_3538-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3538 — same family, header source</figcaption></figure>
+      <figure data-large="large/IMG_3539-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3539.JPG"><span class="media"><img src="thumbs/IMG_3539-480.jpg" srcset="thumbs/IMG_3539-480.jpg 480w, thumbs/IMG_3539-640.jpg 640w, thumbs/IMG_3539-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3539 — blotch with inner ripples</figcaption></figure>
+      <figure data-large="large/IMG_3540-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3540.JPG"><span class="media"><img src="thumbs/IMG_3540-480.jpg" srcset="thumbs/IMG_3540-480.jpg 480w, thumbs/IMG_3540-640.jpg 640w, thumbs/IMG_3540-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3540 — teal enso</figcaption></figure>
+      <figure class="pick" data-large="large/IMG_3541-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3541.JPG"><span class="media"><img src="thumbs/IMG_3541-480.jpg" srcset="thumbs/IMG_3541-480.jpg 480w, thumbs/IMG_3541-640.jpg 640w, thumbs/IMG_3541-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3541 — black + teal enso (avatar)</figcaption></figure>
+      <figure data-large="large/IMG_3542-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3542.JPG"><span class="media"><img src="thumbs/IMG_3542-480.jpg" srcset="thumbs/IMG_3542-480.jpg 480w, thumbs/IMG_3542-640.jpg 640w, thumbs/IMG_3542-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3542 — circular splash + ripples</figcaption></figure>
+      <figure data-large="large/IMG_3543-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3543.JPG"><span class="media"><img src="thumbs/IMG_3543-480.jpg" srcset="thumbs/IMG_3543-480.jpg 480w, thumbs/IMG_3543-640.jpg 640w, thumbs/IMG_3543-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3543 — stamp halo + horizon</figcaption></figure>
+      <figure data-large="large/IMG_3544-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3544.JPG"><span class="media"><img src="thumbs/IMG_3544-480.jpg" srcset="thumbs/IMG_3544-480.jpg 480w, thumbs/IMG_3544-640.jpg 640w, thumbs/IMG_3544-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3544 — circle with crosshairs</figcaption></figure>
+      <figure data-large="large/IMG_3545-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3545.JPG"><span class="media"><img src="thumbs/IMG_3545-480.jpg" srcset="thumbs/IMG_3545-480.jpg 480w, thumbs/IMG_3545-640.jpg 640w, thumbs/IMG_3545-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3545 — dark teal enso</figcaption></figure>
+      <figure data-large="large/IMG_3546-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3546.JPG"><span class="media"><img src="thumbs/IMG_3546-480.jpg" srcset="thumbs/IMG_3546-480.jpg 480w, thumbs/IMG_3546-640.jpg 640w, thumbs/IMG_3546-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3546 — ring with a stem</figcaption></figure>
+      <figure data-large="large/IMG_3547-1600.jpg" data-lw="1600" data-lh="1600" data-original="originals/pond/IMG_3547.JPG"><span class="media"><img src="thumbs/IMG_3547-480.jpg" srcset="thumbs/IMG_3547-480.jpg 480w, thumbs/IMG_3547-640.jpg 640w, thumbs/IMG_3547-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3547 — wash + drafting lines</figcaption></figure>
+      <figure data-large="large/IMG_3548-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3548.JPG"><span class="media"><img src="thumbs/IMG_3548-480.jpg" srcset="thumbs/IMG_3548-480.jpg 480w, thumbs/IMG_3548-640.jpg 640w, thumbs/IMG_3548-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3548 — concentric brush ring</figcaption></figure>
+      <figure data-large="large/IMG_3549-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3549.JPG"><span class="media"><img src="thumbs/IMG_3549-480.jpg" srcset="thumbs/IMG_3549-480.jpg 480w, thumbs/IMG_3549-640.jpg 640w, thumbs/IMG_3549-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3549 — pond ripples</figcaption></figure>
+      <figure data-large="large/IMG_3550-1024.jpg" data-lw="1024" data-lh="1024" data-original="originals/pond/IMG_3550.JPG"><span class="media"><img src="thumbs/IMG_3550-480.jpg" srcset="thumbs/IMG_3550-480.jpg 480w, thumbs/IMG_3550-640.jpg 640w, thumbs/IMG_3550-960.jpg 960w" sizes="(max-width: 600px) 46vw, 240px" width="480" height="480" alt="" loading="lazy" decoding="async" /></span><figcaption>IMG_3550 — drop and rings</figcaption></figure>
     </div>
   </main>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <img id="lb-img" alt="" decoding="async" />
+    <span class="v-spin" aria-hidden="true"></span>
+    <a class="v-orig" id="lb-orig" href="./" target="_blank" rel="noopener">Full size</a>
+    <p class="lb-cap" id="lb-cap" aria-live="polite"></p>
+    <button type="button" class="x" id="lb-x" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button type="button" class="prev" id="lb-prev" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="next" id="lb-next" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+
+  <script>
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll("main figure"));
+      var lb = document.getElementById("lb"), img = document.getElementById("lb-img"), cap = document.getElementById("lb-cap");
+      var orig = document.getElementById("lb-orig");
+      var at = 0, last = null, sx = 0, token = 0, warmed = {};
+      // tiles: shimmer until each thumb loads, then fade in
+      Array.prototype.forEach.call(document.querySelectorAll(".media"), function (m) {
+        var im = m.querySelector("img");
+        var ok = function () { m.classList.add("loaded"); };
+        var bad = function () { m.classList.add("failed", "loaded"); };
+        im.addEventListener("load", ok);
+        im.addEventListener("error", bad);
+        if (im.complete && im.naturalWidth) ok();
+      });
+      function large(f) { var t = f.querySelector("img"); return f.getAttribute("data-large") || t.currentSrc || t.src; }
+      function warm(url) { if (!url || warmed[url]) return; var x = new Image(); x.decoding = "async"; x.src = url; warmed[url] = x; }
+      function fit() {
+        if (lb.hidden) return;
+        var f = figs[at], w = Number(f.getAttribute("data-lw")) || 1, h = Number(f.getAttribute("data-lh")) || 1;
+        var cs = getComputedStyle(lb);
+        var aw = lb.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        var ah = lb.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        var k = Math.min(aw / w, ah / h, 1.6);
+        img.style.width = Math.max(1, Math.floor(w * k)) + "px";
+        img.style.height = Math.max(1, Math.floor(h * k)) + "px";
+      }
+      function show(i) {
+        at = (i + figs.length) % figs.length;
+        var f = figs[at], t = f.querySelector("img"), url = large(f), my = ++token;
+        fit();
+        img.src = t.currentSrc || t.src;
+        img.classList.add("v-low");
+        img.alt = t.alt;
+        lb.classList.add("v-loading");
+        cap.textContent = f.querySelector("figcaption").textContent;
+        var o = f.getAttribute("data-original");
+        orig.hidden = !o;
+        if (o) orig.href = o;
+        var big = warmed[url] || new Image();
+        warmed[url] = big;
+        var done = function () { if (my !== token) return; img.src = url; img.classList.remove("v-low"); lb.classList.remove("v-loading"); };
+        var fail = function () { if (my !== token) return; img.classList.remove("v-low"); lb.classList.remove("v-loading"); };
+        if (big.complete && big.naturalWidth && big.src) done();
+        else {
+          big.addEventListener("load", done, { once: true });
+          big.addEventListener("error", fail, { once: true });
+          if (!big.src) { big.decoding = "async"; big.src = url; }
+        }
+        warm(large(figs[(at + 1) % figs.length]));
+        warm(large(figs[(at - 1 + figs.length) % figs.length]));
+      }
+      window.addEventListener("resize", fit);
+      function open(i) { last = document.activeElement; lb.hidden = false; show(i); document.getElementById("lb-x").focus(); }
+      function close() { lb.hidden = true; if (last && last.focus) last.focus(); }
+      figs.forEach(function (f, i) {
+        f.tabIndex = 0;
+        f.setAttribute("role", "button");
+        f.addEventListener("click", function () { open(i); });
+        f.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(i); } });
+      });
+      document.getElementById("lb-x").addEventListener("click", close);
+      document.getElementById("lb-prev").addEventListener("click", function () { show(at - 1); });
+      document.getElementById("lb-next").addEventListener("click", function () { show(at + 1); });
+      lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+      document.addEventListener("keydown", function (e) {
+        if (lb.hidden) return;
+        if (e.key === "Escape") close();
+        else if (e.key === "ArrowRight") show(at + 1);
+        else if (e.key === "ArrowLeft") show(at - 1);
+      });
+      lb.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener("touchend", function (e) {
+        var dx = e.changedTouches[0].clientX - sx;
+        if (Math.abs(dx) > 50) show(at + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>

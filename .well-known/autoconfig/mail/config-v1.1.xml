@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientConfig version="1.1">
+    <emailProvider id="grokaiapps.com">
+        <domain>grokaiapps.com</domain>
+        <displayName>marketing</displayName>
+        <displayShortName>marketing</displayShortName>
+
+        <incomingServer type="imap">
+            <hostname>mail.grokaiapps.com</hostname>
+            <port>993</port>
+            <socketType>SSL</socketType>
+            <authentication>password-cleartext</authentication>
+            <username>%EMAILADDRESS%</username>
+        </incomingServer>
+
+        <outgoingServer type="smtp">
+            <hostname>mail.grokaiapps.com</hostname>
+            <port>465</port>
+            <socketType>SSL</socketType>
+            <authentication>password-cleartext</authentication>
+            <username>%EMAILADDRESS%</username>
+        </outgoingServer>
+    </emailProvider>
+</clientConfig>

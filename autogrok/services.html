@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services — AUTOGROK Desk</title>
+  <meta name="description" content="AUTOGROK Desk SKUs and Stripe packs with prices.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="stylesheet" href="styles.css?v=202610052130">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "AUTOGROK Desk services",
+    "url": "https://grokaiapps.com/autogrok/services.html",
+    "itemListElement": [
+      {"@type": "Product", "position": 1, "name": "url-probe", "description": "Check a URL: status, final URL, content-type, timing", "offers": {"@type": "Offer", "price": "0.03", "priceCurrency": "USD"}},
+      {"@type": "Product", "position": 2, "name": "page-extract", "description": "Pull useful text/structure from a page", "offers": {"@type": "Offer", "price": "0.05", "priceCurrency": "USD"}},
+      {"@type": "Product", "position": 3, "name": "watch-once", "description": "One-shot watch/check snapshot", "offers": {"@type": "Offer", "price": "0.10", "priceCurrency": "USD"}},
+      {"@type": "Product", "position": 4, "name": "json-shape", "description": "Shape or normalize JSON", "offers": {"@type": "Offer", "price": "0.15", "priceCurrency": "USD"}},
+      {"@type": "Product", "position": 5, "name": "brief", "description": "Researched written brief, delivered within 24 hours, ~500 words, at least 3 cited sources", "offers": {"@type": "Offer", "price": "0.25", "priceCurrency": "USD"}}
+    ]
+  }
+  </script>
+</head>
+<body data-view="people">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">AUTOGROK <span>Desk</span></a>
+      <nav aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="services.html" aria-current="page">Services</a>
+        <a href="buy.html">Buy</a>
+        <a href="guide-agentic-payments.html">Guide</a>
+        <a href="lead.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wide">
+    <h1>Services</h1>
+    <p class="lede">Five paid micro-jobs. Agents pay the SKU in USDC. People buy packs (card Checkout floors at $0.50).</p>
+
+    <div class="audience-toggle" role="tablist" aria-label="Audience">
+      <button type="button" role="tab" data-audience-btn="people" aria-selected="true">People</button>
+      <button type="button" role="tab" data-audience-btn="agents" aria-selected="false">Agents</button>
+    </div>
+
+    <div data-audience="people" class="audience-panel">
+      <h2>What each job does</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>What it does</th>
+            <th>Per call</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>URL probe</strong></td>
+            <td>Status, final URL, content-type, timing. Lightest call.</td>
+            <td class="price">$0.03</td>
+          </tr>
+          <tr>
+            <td><strong>Page extract</strong></td>
+            <td>Useful text and structure from a page.</td>
+            <td class="price">$0.05</td>
+          </tr>
+          <tr>
+            <td><strong>Watch once</strong></td>
+            <td>One-shot check — a snapshot, not a long subscription.</td>
+            <td class="price">$0.10</td>
+          </tr>
+          <tr>
+            <td><strong>JSON shape</strong></td>
+            <td>Normalize JSON for the next step.</td>
+            <td class="price">$0.15</td>
+          </tr>
+          <tr>
+            <td><strong>Brief</strong></td>
+            <td>A researched, written brief on your topic. <strong>Delivered within 24 hours</strong> (usually same day), ~500 words (you can ask for 50–1,500), at least 3 cited source links. Ready on your job page — free to check.</td>
+            <td class="price">$0.25</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Card packs (prepaid leftovers)</h2>
+      <p>Buy a pack once on the <a href="https://desk.grokaiapps.com">live desk</a>. Leftover job counts stay with the purchase. After Checkout, the desk loads credits automatically — humans never paste a key. Counts stay until you spend them.</p>
+      <p class="form-note"><a class="btn btn-primary" href="https://desk.grokaiapps.com">Open desk</a></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Pack</th>
+            <th>Credits</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Page extract ×10</td>
+            <td>10 × page-extract</td>
+            <td class="price">$0.50</td>
+          </tr>
+          <tr>
+            <td>URL probe ×17</td>
+            <td>17 × url-probe</td>
+            <td class="price">$0.51</td>
+          </tr>
+          <tr>
+            <td>Watch ×5</td>
+            <td>5 × watch-once</td>
+            <td class="price">$0.50</td>
+          </tr>
+          <tr>
+            <td>JSON ×4</td>
+            <td>4 × json-shape</td>
+            <td class="price">$0.60</td>
+          </tr>
+          <tr>
+            <td>Brief ×2</td>
+            <td>2 × brief</td>
+            <td class="price">$0.50</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        Why packs? Stripe Checkout for cards effectively floors at <strong>$0.50</strong>. Leftover counts stay with the purchase in Stripe — not ephemeral disk.
+      </div>
+
+      <h2>Use Desk from Claude or Cursor</h2>
+      <p>Desk also works as a tool inside AI apps. Add one line to Cursor or Claude Code and your assistant can run any Desk job for you — same prices, paid from your pack credits.</p>
+<pre class="agent-json">{
+  "mcpServers": {
+    "autogrok-desk": {
+      "url": "https://desk.grokaiapps.com/mcp",
+      "headers": { "X-Entitlement-Key": "your-checkout-email@example.com" }
+    }
+  }
+}</pre>
+      <p class="form-note">Cursor: paste into <code>~/.cursor/mcp.json</code>. Claude Code: <code>claude mcp add --transport http autogrok-desk https://desk.grokaiapps.com/mcp --header "X-Entitlement-Key: your-checkout-email@example.com"</code></p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="buy.html">How to buy</a>
+        <a class="btn btn-secondary" href="https://desk.grokaiapps.com">Live desk API</a>
+      </div>
+    </div>
+
+    <div data-audience="agents" class="audience-panel" hidden>
+      <h2>Machine catalog</h2>
+<pre class="agent-json">{
+  "api_base": "https://desk.grokaiapps.com",
+  "skus": [
+    {"id":"url-probe","method":"POST","path":"/v1/jobs/url-probe","usd":0.03},
+    {"id":"page-extract","method":"POST","path":"/v1/jobs/page-extract","usd":0.05},
+    {"id":"watch-once","method":"POST","path":"/v1/jobs/watch-once","usd":0.10},
+    {"id":"json-shape","method":"POST","path":"/v1/jobs/json-shape","usd":0.15},
+    {"id":"brief","method":"POST","path":"/v1/jobs/brief","usd":0.25}
+  ],
+  "packs": [
+    {"id":"pack_page_extract_10","sku":"page-extract","n":10,"usd":0.50},
+    {"id":"pack_url_probe_17","sku":"url-probe","n":17,"usd":0.51},
+    {"id":"pack_watch_5","sku":"watch-once","n":5,"usd":0.50},
+    {"id":"pack_json_4","sku":"json-shape","n":4,"usd":0.60},
+    {"id":"pack_brief_2","sku":"brief","n":2,"usd":0.50}
+  ],
+  "mcp": "https://desk.grokaiapps.com/mcp",
+  "mpp_card_packs": "POST https://desk.grokaiapps.com/v1/mpp/packs/{pack_id}",
+  "free": ["GET /v1/discovery","GET /v1/catalog","GET /.well-known/x402","GET /v1/packs","GET /v1/jobs/:id"],
+  "catalog_url": "https://grokaiapps.com/autogrok/for-agents.json"
+}</pre>
+
+      <h2>MCP server (Claude, Cursor, any MCP client)</h2>
+      <p>Remote MCP over Streamable HTTP: <code>https://desk.grokaiapps.com/mcp</code>. <code>initialize</code> and <code>tools/list</code> are free. Tools: <code>url_probe</code> $0.03, <code>page_extract</code> $0.05, <code>watch_once</code> $0.10, <code>json_shape</code> $0.15, <code>brief</code> $0.25, <code>brief_status</code> free.</p>
+      <p>Pay per <code>tools/call</code> with x402 (USDC on Base): an unpaid call returns <code>isError: true</code> with an x402 v2 <code>PaymentRequired</code> in <code>structuredContent</code>; retry with the signed payload in <code>_meta["x402/payment"]</code> (e.g. <code>createx402MCPClient</code> from <code>@x402/mcp</code>). Or send header <code>X-Entitlement-Key</code> to spend pack credits.</p>
+<pre class="agent-json">{
+  "mcpServers": {
+    "autogrok-desk": { "url": "https://desk.grokaiapps.com/mcp" }
+  }
+}</pre>
+
+      <h2>Card packs over MPP (Stripe Shared Payment Tokens)</h2>
+      <p>Agents with a Stripe Link wallet (or any Machine Payments Protocol client) can buy any pack by card: <code>POST https://desk.grokaiapps.com/v1/mpp/packs/{pack_id}</code>. An unpaid call returns <code>402</code> with <code>WWW-Authenticate: Payment method="stripe", intent="charge"</code> and Desk's Stripe profile as <code>networkId</code>. Pay it with a Shared Payment Token and the response carries an <code>entitlement_key</code> (<code>agk.…</code>) that works as <code>X-Entitlement-Key</code> on <code>/v1/jobs/*</code> and on MCP. Send an existing key with the next purchase to top it up. Cards have a $0.50 minimum, so this rail sells packs only ($0.50–$0.60); single calls stay on USDC/x402. Discovery: <code>/openapi.json</code>.</p>
+<pre class="agent-json">link-cli spend-request create --credential-type shared_payment_token \
+  --network-id profile_61VWqT6yAHyjIP6EJA6VWqT668SQipSDos48kYNEeAxc \
+  --amount 51 --merchant-name "AUTOGROK Desk" --merchant-url https://desk.grokaiapps.com \
+  --context "Buying 17 url-probe credits from AUTOGROK Desk to check link health for the user's site audit." \
+  --request-approval
+link-cli mpp pay https://desk.grokaiapps.com/v1/mpp/packs/pack_url_probe_17 \
+  --spend-request-id lsrq_… --method POST
+# → {"entitlement_key":"agk.…","credits":{"url-probe":17}}</pre>
+
+      <h2>Brief promise</h2>
+      <p>Delivered within 24 hours of the order (usually same day). ~500 words by default (<code>max_words</code> 50–1500). At least 3 cited public source links. Result at <code>GET /v1/jobs/:id</code> or MCP <code>brief_status</code>: <code>{ title, summary, body_markdown, sources, word_count }</code>. Jobs carry <code>dueBy</code>.</p>
+
+      <h2>Endpoints</h2>
+      <ul class="endpoint-list">
+        <li><span class="verb">POST</span> /v1/jobs/url-probe <span class="note">$0.03 · USDC/x402 or entitlement</span></li>
+        <li><span class="verb">POST</span> /v1/jobs/page-extract <span class="note">$0.05</span></li>
+        <li><span class="verb">POST</span> /v1/jobs/watch-once <span class="note">$0.10</span></li>
+        <li><span class="verb">POST</span> /v1/jobs/json-shape <span class="note">$0.15</span></li>
+        <li><span class="verb">POST</span> /v1/jobs/brief <span class="note">$0.25 · delivered ≤24h</span></li>
+        <li><span class="verb">GET</span> /v1/jobs/:id <span class="note">Free status</span></li>
+        <li><span class="verb">POST</span> /mcp <span class="note">MCP (Streamable HTTP) · list free, calls paid</span></li>
+        <li><span class="verb">POST</span> /v1/mpp/packs/{pack_id} <span class="note">Agents · card packs via MPP (Stripe SPT) → entitlement key</span></li>
+        <li><span class="verb">POST</span> /v1/checkout/session <span class="note">Humans · body {"pack_id":"..."}</span></li>
+      </ul>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="for-agents.json">for-agents.json</a>
+        <a class="btn btn-secondary" href="buy.html?view=agents">Buy (agents)</a>
+        <a class="btn btn-secondary" href="https://desk.grokaiapps.com/v1/discovery">Live discovery</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>AUTOGROK Desk · <a href="https://grokaiapps.com/autogrok/">grokaiapps.com/autogrok</a></p>
+    <p><a href="https://x.com/GrokAiAppsAI">@GrokAiAppsAI</a> · <a href="mailto:grokaiapps@gmail.com">grokaiapps@gmail.com</a></p>
+  </footer>
+  <script src="site.js?v=202610052130" defer></script>
+</body>
+</html>
